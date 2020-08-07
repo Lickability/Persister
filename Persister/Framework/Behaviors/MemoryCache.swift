@@ -1,5 +1,5 @@
 //
-//  MemoryCacheBehavior.swift
+//  MemoryCache.swift
 //  Persister
 //
 //  Created by Twig on 5/9/19.
@@ -8,13 +8,13 @@
 
 import Foundation
 
-public struct MemoryCacheBehavior {
+public struct MemoryCache {
     
     // MARK: - Cache
     
     public let expirationInterval: TimeInterval
     
-    // MARK: - MemoryCacheBehavior
+    // MARK: - MemoryCache
     
     private let cache: LRUCache<String, Any>
     
@@ -24,7 +24,7 @@ public struct MemoryCacheBehavior {
     }
 }
 
-extension MemoryCacheBehavior: Cache {
+extension MemoryCache: Cache {
     
     // MARK: - Cache
     
