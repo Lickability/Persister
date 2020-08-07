@@ -9,7 +9,7 @@
 import Foundation
 
 /// Determines when newly written items are considered expired.
-public enum CacheExpiration {
+public enum CacheExpirationPolicy {
     
     /// Items never expire.
     case never
@@ -22,7 +22,7 @@ public enum CacheExpiration {
 public protocol Cache {
     
     /// Determines when newly written items are considered expired. The default value is `never`.
-    var expiration: CacheExpiration { get }
+    var expirationPolicy: CacheExpirationPolicy { get }
     
     /// Reads and returns an items from the cache for the given `key`, if found.
     /// - Parameter key: The key associated with the item when it was written.
@@ -37,7 +37,7 @@ public protocol Cache {
 
 extension Cache {
     
-    public var expiration: CacheExpiration {
+    public var expirationPolicy: CacheExpirationPolicy {
         return .never
     }
 }
