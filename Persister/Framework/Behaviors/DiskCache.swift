@@ -1,5 +1,5 @@
 //
-//  PersistenceController.swift
+//  DiskCache.swift
 //  Persister
 //
 //  Created by Twig on 5/10/19.
@@ -8,13 +8,13 @@
 
 import Foundation
 
-public final class PersistenceController: Cache {
+public final class DiskCache: Cache {
     
     // MARK: - Cache
     
     public let expirationPolicy: CacheExpirationPolicy
     
-    // MARK: - PersistenceController
+    // MARK: - DiskCache
     
     private let encoder: PersistenceEncoder
     private let decoder: PersistenceDecoder
