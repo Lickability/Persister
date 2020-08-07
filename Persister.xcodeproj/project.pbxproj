@@ -91,6 +91,8 @@
 				4C3DAF1E24D4AD8D007F1857 /* PersistenceEncoder.swift */,
 				4C3DAF2124D4AD8D007F1857 /* PersistenceDecoder.swift */,
 				4C3CA71A24DDE18300003CCF /* CacheExpirationPolicy.swift */,
+				4C3DAF1F24D4AD8D007F1857 /* DiskManager.swift */,
+				4CC780D624DDB38600B5C5F8 /* PersistenceError.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -156,39 +158,13 @@
 		4C3DAF1924D4AD78007F1857 /* Framework */ = {
 			isa = PBXGroup;
 			children = (
-				4C3DAF2324D4AD8D007F1857 /* Behaviors */,
-				4C3DAF1A24D4AD8D007F1857 /* Cache */,
-				4C3DAF1D24D4AD8D007F1857 /* Disk */,
-				4C3CA71724DDDE1C00003CCF /* Utilities */,
-			);
-			path = Framework;
-			sourceTree = "<group>";
-		};
-		4C3DAF1A24D4AD8D007F1857 /* Cache */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Cache;
-			sourceTree = "<group>";
-		};
-		4C3DAF1D24D4AD8D007F1857 /* Disk */ = {
-			isa = PBXGroup;
-			children = (
-				4C3DAF1F24D4AD8D007F1857 /* DiskManager.swift */,
-				4CC780D624DDB38600B5C5F8 /* PersistenceError.swift */,
-			);
-			path = Disk;
-			sourceTree = "<group>";
-		};
-		4C3DAF2324D4AD8D007F1857 /* Behaviors */ = {
-			isa = PBXGroup;
-			children = (
 				4C3DAF2424D4AD8D007F1857 /* Cache.swift */,
 				4C3DAF2524D4AD8D007F1857 /* Persister.swift */,
 				4C3DAF2624D4AD8D007F1857 /* MemoryCache.swift */,
 				4C3DAF2224D4AD8D007F1857 /* DiskCache.swift */,
+				4C3CA71724DDDE1C00003CCF /* Utilities */,
 			);
-			path = Behaviors;
+			path = Framework;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
