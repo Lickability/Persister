@@ -16,6 +16,17 @@ public enum CacheExpirationPolicy {
     
     /// Items expire after the associated interval.
     case afterInterval(TimeInterval)
+    
+    /// Returns the date of expiration for items in the cache
+    /// - Parameter referenceDate: The date from which expiration should be calculated. This should usually be the date the item was written.
+    func expirationDate(from referenceDate: Date) -> Date? {
+        switch self {
+        case .never:
+            return nil
+        case .afterInterval(let interval):
+            return referenceDate.addingTimeInterval(interval)
+        }
+    }
 }
 
 /// Describes a type capable of performing read and write operations.

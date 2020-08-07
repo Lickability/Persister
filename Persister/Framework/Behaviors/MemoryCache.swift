@@ -41,15 +41,3 @@ extension MemoryCache: Cache {
         cache.set(item, for: key, expiresOn: expirationPolicy.expirationDate(from: Date()))
     }
 }
-
-private extension CacheExpirationPolicy {
-    
-    func expirationDate(from date: Date) -> Date? {
-        switch self {
-        case .never:
-            return nil
-        case .afterInterval(let interval):
-            return date.addingTimeInterval(interval)
-        }
-    }
-}
