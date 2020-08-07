@@ -24,7 +24,7 @@ class LRUCacheTests: XCTestCase {
         let key = "key"
         
         cache.set(value, for: key, expiresOn: nil)
-        XCTAssertEqual(value, cache.value(for: key))
+        XCTAssertEqual(value, cache.read(for: key))
     }
     
     func testLRUEvictsObject() {
@@ -35,7 +35,7 @@ class LRUCacheTests: XCTestCase {
         cache.set("3", for: "3", expiresOn: nil)
         cache.set("4", for: "4", expiresOn: nil)
         
-        XCTAssertNil(cache.value(for: "1"))
+        XCTAssertNil(cache.read(for: "1"))
     }
     
     func testLRUResetsObjectToHeadWhenAccessed() {
@@ -44,12 +44,12 @@ class LRUCacheTests: XCTestCase {
         cache.set("1", for: "1", expiresOn: nil)
         cache.set("2", for: "2", expiresOn: nil)
         cache.set("3", for: "3", expiresOn: nil)
-        _ = cache.value(for: "1")
+        _ = cache.read(for: "1")
         
         cache.set("4", for: "4", expiresOn: nil)
         
-        XCTAssertNil(cache.value(for: "2"))
-        XCTAssertNotNil(cache.value(for: "1"))
+        XCTAssertNil(cache.read(for: "2"))
+        XCTAssertNotNil(cache.read(for: "1"))
     }
     
     func testCacheWritePerformance() {
@@ -69,7 +69,7 @@ class LRUCacheTests: XCTestCase {
 
         measure {
             for _ in 1...1000 {
-                _ = cache.value(for: key)
+                _ = cache.read(for: key)
             }
         }
     }

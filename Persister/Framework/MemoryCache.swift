@@ -21,7 +21,7 @@ public struct MemoryCache {
     
     /// Creates a new `MemoryCache`.
     /// - Parameters:
-    ///   - capacity: Determines how many items can exist in a cache.
+    ///   - capacity: The capacity to use for the cache. If the capacity is reached, the least recently used object will be evicted from the cache.
     ///   - expirationPolicy: Determines when newly written items are considered expired. Defaults to expire items in 10 minutes (600 seconds).
     public init(capacity: CacheCapacity, expirationPolicy: CacheExpirationPolicy = .afterInterval(600)) {
         self.cache = LRUCache(capacity: capacity)
@@ -38,7 +38,7 @@ extension MemoryCache: Cache {
     }
     
     public func write<T: Codable>(item: T, forKey key: String) throws {
-        cache.set(item, for: key, expiresOn: expirationPolicy.expirationDate(from: Date()))
+        cache.write(item, for: key, expiresOn: expirationPolicy.expirationDate(from: Date()))
     }
     
     public func remove(forKey key: String) throws {

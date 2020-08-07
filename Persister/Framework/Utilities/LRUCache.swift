@@ -8,6 +8,7 @@
 
 import UIKit
 
+/// A generic "least-recently-used" cache. Items are purged based on least recent usage depending on the value for `capacity` passed on `init`.
 public final class LRUCache<Key: Hashable, Value> {
     
     private let capacity: CacheCapacity
@@ -15,8 +16,7 @@ public final class LRUCache<Key: Hashable, Value> {
     private var backingStoreDictionary = SynchronizedDictionary<Key, Value>()
     private var expirationDictionary = SynchronizedDictionary<Key, Date>()
     
-    /// Initializes an LRUCache with the given parameters.
-    ///
+    /// Creates a new `LRUCache`.
     /// - Parameter capacity: The capacity to use for the cache. If the capacity is reached, the least recently used object will be evicted from the cache.
     public init(capacity: CacheCapacity) {
         self.capacity = capacity
@@ -24,20 +24,19 @@ public final class LRUCache<Key: Hashable, Value> {
         NotificationCenter.default.addObserver(self, selector: #selector(didReceiveMemoryWarning), name: UIApplication.didReceiveMemoryWarningNotification, object: nil)
     }
     
-    /// Sets the given value for the specified key in the cache.
-    ///
+    /// Writes an item to the cache.
     /// - Parameters:
-    ///   - value: The value to add to the cache.
-    ///   - key: The key to identify the cached value.
-    ///   - date: The date at which the item is considered expired.
-    public func set(_ value: Value, for key: Key, expiresOn date: Date?) {
+    ///   - item: The item to write to the cache.
+    ///   - key: The key that can be used to recall the written item later.
+    ///   - date: The date at which the item is considered expired. If `nil`, the item will never expire.
+    public func write(_ item: Value, for key: Key, expiresOn date: Date?) {
         
         if let index = keysOrderedByRecentUse.firstIndex(of: key) {
             moveKeyToFrontOfList(key: key, atIndex: index)
-            backingStoreDictionary[key] = value
+            backingStoreDictionary[key] = item
         } else {
             keysOrderedByRecentUse.insert(key, at: keysOrderedByRecentUse.startIndex)
-            backingStoreDictionary[key] = value
+            backingStoreDictionary[key] = item
         }
         
         expirationDictionary[key] = date
@@ -51,11 +50,9 @@ public final class LRUCache<Key: Hashable, Value> {
         }
     }
     
-    /// Retrieves a value for the given key.
-    ///
-    /// - Parameter key: The key to retrieve a value for.
-    /// - Returns: A value for the given key, or nil if the value was not found.
-    public func value(for key: Key) -> Value? {
+    /// Reads and returns an items from the cache for the given `key`, if found.
+    /// - Parameter key: The key associated with the item when it was written.
+    public func read(for key: Key) -> Value? {
         guard let value = backingStoreDictionary[key] else {
             return nil
         }
@@ -72,8 +69,10 @@ public final class LRUCache<Key: Hashable, Value> {
         return value
     }
     
+    /// Reads and returns an items from the cache for the given `key`, if found.
+    /// - Parameter key: The key associated with the item when it was written.
     public subscript(key: Key) -> Value? {
-        return value(for: key)
+        return read(for: key)
     }
     
     /// Removes an item associated with the given `key`.
