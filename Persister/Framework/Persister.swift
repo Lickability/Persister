@@ -28,6 +28,11 @@ extension Persister: Cache {
     
     // MARK: - Cache
     
+    public var expirationPolicy: CacheExpirationPolicy {
+        assertionFailure("Persister wraps two caches that can have independent expiration policies. Do not rely on Persister’s expirationPolicy directly.")
+        return .never
+    }
+    
     public func read<T: Codable>(forKey key: String) throws -> T? {
         if let cachedObject: T = try memoryCache.read(forKey: key) {
             return cachedObject
