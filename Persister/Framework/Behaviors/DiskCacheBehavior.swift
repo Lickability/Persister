@@ -10,7 +10,7 @@ import Foundation
 
 public struct DiskCacheBehavior {
     
-    // MARK: - CacheBehavior
+    // MARK: - Cache
     
     public let expirationInterval: TimeInterval
     
@@ -24,16 +24,16 @@ public struct DiskCacheBehavior {
     }
 }
 
-extension DiskCacheBehavior: CacheBehavior {
+extension DiskCacheBehavior: Cache {
     
-    // MARK: - CacheBehavior
+    // MARK: - Cache
     
     public func read<T: Codable>(forKey key: String) throws -> T? {
         return try persister.read(forKey: key)?.object
     }
     
-    public func write<T: Codable>(value: T, forKey key: String) throws {
-        let entry = DiskEntry(object: value, expiration: Date().addingTimeInterval(expirationInterval))
+    public func write<T: Codable>(item: T, forKey key: String) throws {
+        let entry = DiskEntry(object: item, expiration: Date().addingTimeInterval(expirationInterval))
         try persister.write(entry: entry, forKey: key)
     }
 }

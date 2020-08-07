@@ -10,7 +10,7 @@ import Foundation
 
 public struct MemoryCacheBehavior {
     
-    // MARK: - CacheBehavior
+    // MARK: - Cache
     
     public let expirationInterval: TimeInterval
     
@@ -24,15 +24,15 @@ public struct MemoryCacheBehavior {
     }
 }
 
-extension MemoryCacheBehavior: CacheBehavior {
+extension MemoryCacheBehavior: Cache {
     
-    // MARK: - CacheBehavior
+    // MARK: - Cache
     
     public func read<T: Codable>(forKey key: String) throws -> T? {
         return cache[key] as? T
     }
     
-    public func write<T: Codable>(value: T, forKey key: String) throws {
-        cache.set(value, for: key, expiresOn: Date().addingTimeInterval(expirationInterval))
+    public func write<T: Codable>(item: T, forKey key: String) throws {
+        cache.set(item, for: key, expiresOn: Date().addingTimeInterval(expirationInterval))
     }
 }
