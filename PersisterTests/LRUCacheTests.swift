@@ -14,7 +14,7 @@ class LRUCacheTests: XCTestCase {
     private let cache = LRUCache<String, String>(capacity: 100)
     
     override func tearDown() {
-        cache.removeAllValues()
+        cache.removeAllItems()
         
         super.tearDown()
     }

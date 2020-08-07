@@ -27,15 +27,10 @@ public final class LRUCache<Key: Hashable, Value> {
     /// Sets the given value for the specified key in the cache.
     ///
     /// - Parameters:
-    ///   - value: The value to add to the cache. If nil, any existing information for that key is removed.
+    ///   - value: The value to add to the cache.
     ///   - key: The key to identify the cached value.
-    public func set(_ value: Value?, for key: Key, expiresOn date: Date?) {
-        guard let value = value else {
-            keysOrderedByRecentUse.removeAll { $0 == key }
-            backingStoreDictionary[key] = nil
-            expirationDictionary[key] = nil
-            return
-        }
+    ///   - date: The date at which the item is considered expired.
+    public func set(_ value: Value, for key: Key, expiresOn date: Date?) {
         
         if let index = keysOrderedByRecentUse.firstIndex(of: key) {
             moveKeyToFrontOfList(key: key, atIndex: index)
@@ -64,7 +59,7 @@ public final class LRUCache<Key: Hashable, Value> {
         }
 
         if let date = expirationDictionary[key], date < Date() {
-            set(nil, for: key, expiresOn: nil)
+            removeItem(for: key)
             return nil
         }
         
@@ -79,10 +74,29 @@ public final class LRUCache<Key: Hashable, Value> {
         return value(for: key)
     }
     
-    /// Removes all values from the cache.
-    public func removeAllValues() {
+    /// Removes an item associated with the given `key`.
+    /// - Parameter key: The key associated with the item when it was written.
+    public func removeItem(for key: Key) {
+        keysOrderedByRecentUse.removeAll { $0 == key }
+        backingStoreDictionary[key] = nil
+        expirationDictionary[key] = nil
+    }
+    
+    /// Removes all items from the cache.
+    public func removeAllItems() {
         backingStoreDictionary.removeAll()
         keysOrderedByRecentUse.removeAll()
+        expirationDictionary.removeAll()
+    }
+    
+    /// Removes all expired items from the cache.
+    public func removeExpired() {
+        let expirationDictionary = self.expirationDictionary
+        expirationDictionary.forEach { key, expirationDate in
+            if expirationDate < Date() {
+                removeItem(for: key)
+            }
+        }
     }
     
     private func moveKeyToFrontOfList(key: Key, atIndex index: Int) {
@@ -91,6 +105,6 @@ public final class LRUCache<Key: Hashable, Value> {
     }
     
     @objc private func didReceiveMemoryWarning() {
-        removeAllValues()
+        removeAllItems()
     }
 }

@@ -8,32 +8,40 @@
 
 import Foundation
 
-public final class PersistenceController: Persister {
+public final class PersistenceController: Cache {
+    
+    // MARK: - Cache
+    
+    public let expirationPolicy: CacheExpirationPolicy
+    
+    // MARK: - PersistenceController
+    
     private let encoder: PersistenceEncoder
     private let decoder: PersistenceDecoder
     private let diskManager: DiskManager
     private let rootDirectoryURL: URL
     
-    public init(encoder: PersistenceEncoder = JSONEncoder(), decoder: PersistenceDecoder = JSONDecoder(), rootDirectoryURL: URL, diskManager: DiskManager = FileManager.default) {
+    public init(encoder: PersistenceEncoder = JSONEncoder(), decoder: PersistenceDecoder = JSONDecoder(), rootDirectoryURL: URL, diskManager: DiskManager = FileManager.default, expirationPolicy: CacheExpirationPolicy = .afterInterval(3600)) {
         self.encoder = encoder
         self.decoder = decoder
         self.rootDirectoryURL = rootDirectoryURL
         self.diskManager = diskManager
+        self.expirationPolicy = expirationPolicy
         
         try? removeExpired()
     }
     
-    public func write<T: Codable>(entry: DiskEntry<T>, forKey key: String) throws {
+    public func write<T: Codable>(item: T, forKey key: String) throws {
         try diskManager.createDirectoryIfNecessary(directoryURL: rootDirectoryURL)
 
         let filePath = persistencePath(forKey: key)
         
-        let data = try encoder.encode(entry.object)
+        let data = try encoder.encode(item)
         
-        diskManager.write(data, toPath: filePath, expiresOn: entry.expiration)
+        diskManager.write(data, toPath: filePath, expiresOn: expirationPolicy.expirationDate(from: Date()))
     }
     
-    public func read<T: Decodable>(forKey key: String) throws -> DiskEntry<T>? {
+    public func read<T: Decodable>(forKey key: String) throws -> T? {
         let filePath = persistencePath(forKey: key)
         
         if let entry = diskManager.read(atPath: filePath) {
@@ -42,9 +50,7 @@ public final class PersistenceController: Persister {
                 
                 throw PersistenceError.objectIsExpired
             } else {
-                let object = try decoder.decode(T.self, from: entry.object)
-                
-                return DiskEntry(object: object, expiration: entry.expiration)
+                return try decoder.decode(T.self, from: entry.object)
             }
         } else {
             throw PersistenceError.noValidDataForKey

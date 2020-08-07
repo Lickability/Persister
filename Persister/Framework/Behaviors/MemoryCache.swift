@@ -40,4 +40,16 @@ extension MemoryCache: Cache {
     public func write<T: Codable>(item: T, forKey key: String) throws {
         cache.set(item, for: key, expiresOn: expirationPolicy.expirationDate(from: Date()))
     }
+    
+    public func remove(forKey key: String) throws {
+        cache.removeItem(for: key)
+    }
+    
+    public func removeAll() throws {
+        cache.removeAllItems()
+    }
+    
+    public func removeExpired() throws {
+        cache.removeExpired()
+    }
 }

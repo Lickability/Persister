@@ -38,4 +38,19 @@ extension PersistenceBehavior: Cache {
         try memoryCacheBehavior.write(item: item, forKey: key)
         try diskCacheBehavior.write(item: item, forKey: key)
     }
+    
+    public func remove(forKey key: String) throws {
+        try memoryCacheBehavior.remove(forKey: key)
+        try diskCacheBehavior.remove(forKey: key)
+    }
+    
+    public func removeAll() throws {
+        try memoryCacheBehavior.removeAll()
+        try diskCacheBehavior.removeAll()
+    }
+    
+    public func removeExpired() throws {
+        try memoryCacheBehavior.removeExpired()
+        try diskCacheBehavior.removeExpired()
+    }
 }

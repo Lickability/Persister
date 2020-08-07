@@ -44,6 +44,16 @@ public protocol Cache {
     ///   - item: The item to write to the cache.
     ///   - key: The key that can be used to recall the written item later.
     func write<T: Codable>(item: T, forKey key: String) throws
+    
+    /// Removes an item associated with the given `key`.
+    /// - Parameter key: The key associated with the item when it was written.
+    func remove(forKey key: String) throws
+    
+    /// Removes all items from the cache.
+    func removeAll() throws
+    
+    /// Removes all expired items from the cache.
+    func removeExpired() throws
 }
 
 extension Cache {
