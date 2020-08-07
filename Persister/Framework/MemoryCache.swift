@@ -8,7 +8,7 @@
 
 import Foundation
 
-/// Describes a type capable of caching items in memory. Items are purged based on least recent usage depending on the value for `capacity` passed on `init`.
+/// Caches items in memory. Items are purged based on least recent usage depending on the value for `capacity` passed on `init`.
 public struct MemoryCache {
     
     // MARK: - Cache
