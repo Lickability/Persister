@@ -14,7 +14,7 @@ public protocol Cache {
     /// Determines when newly written items are considered expired. The default value is `never`.
     var expirationPolicy: CacheExpirationPolicy { get }
     
-    /// Reads and returns an items from the cache for the given `key`, if found.
+    /// Reads and returns an item from the cache for the given `key`, if found.
     /// - Parameter key: The key associated with the item when it was written.
     func read<T: Codable>(forKey key: String) throws -> T?
     

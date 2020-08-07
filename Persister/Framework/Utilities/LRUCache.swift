@@ -49,7 +49,7 @@ public final class LRUCache<Key: Hashable, Value> {
         }
     }
     
-    /// Reads and returns an items from the cache for the given `key`, if found.
+    /// Reads and returns an item from the cache for the given `key`, if found.
     /// - Parameter key: The key associated with the item when it was written.
     public func read(for key: Key) -> Value? {
         guard let value = backingStoreDictionary[key] else {
@@ -68,7 +68,7 @@ public final class LRUCache<Key: Hashable, Value> {
         return value
     }
     
-    /// Reads and returns an items from the cache for the given `key`, if found.
+    /// Reads and returns an item from the cache for the given `key`, if found.
     /// - Parameter key: The key associated with the item when it was written.
     public subscript(key: Key) -> Value? {
         return read(for: key)
