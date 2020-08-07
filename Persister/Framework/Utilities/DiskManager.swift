@@ -8,27 +8,54 @@
 
 import Foundation
 
+/// Represents an item stored on disk with its associated expiration date.
 public struct DiskEntry<T: Codable>: Codable {
-    public let object: T
+    
+    /// The item stored on disk.
+    public let item: T
+    
+    /// The item’s expiration date.
     public let expiration: Date?
 }
 
+/// Describes a type capable of reading and writing items from / to disk.
 public protocol DiskManager {
+    
+    /// Creates a directory at the specified `URL` if one doesn’t exist already.
+    /// - Parameter directoryURL: The `URL` of the directory to create.
     func createDirectoryIfNecessary(directoryURL: URL) throws
     
+    /// Writes the specified data to disk at the specified path and associates an expiration date to be read later.
+    /// - Parameters:
+    ///   - data: The data to write to the specified path.
+    ///   - path: The path to which data will be written. Note that this is the full file path, not relative to any root directory.
+    ///   - date: The expiration date to associate with the item.
     func write(_ data: Data, toPath path: String, expiresOn date: Date?)
+    
+    /// Reads the data at the specified path on disk.
+    /// - Parameter path: The path from which data will be read. Note that this is the full file path, not relative to any root directory.
     func read(atPath path: String) -> DiskEntry<Data>?
     
+    /// Removes the file or directory from disk at the specified path.
+    /// - Parameter path: The path of the file or directory. The contents at the specified path do not need to have been written using a `DiskManager` to be removed. Note that this is the full file path, not relative to any root directory.
     func remove(atPath path: String) throws
+    
+    /// Deletes the contents of the directory at the specified `URL`.
+    /// - Parameter url: The `URL` whose contents are to be deleted. All files and subdirectories will be removed, regardless of whether they were written using a `DiskManager`. The directory itself is not deleted.
     func removeContentsOfDirectory(at url: URL) throws
+    
+    /// Removes only expired items in the directory at the specified `URL`.
+    /// - Parameter url: The `URL` whose expired items are to be deleted.
     func removeExpiredContentsOfDirectory(at url: URL) throws
 }
 
 extension FileManager: DiskManager {
-    
+        
     private struct DateHolder: Codable {
         let date: Date?
     }
+    
+    // MARK: - DiskManager
     
     public func createDirectoryIfNecessary(directoryURL: URL) throws {
         try createDirectory(at: directoryURL, withIntermediateDirectories: true, attributes: nil)
@@ -56,7 +83,7 @@ extension FileManager: DiskManager {
             date = nil
         }
         
-        return DiskEntry(object: data, expiration: date)
+        return DiskEntry(item: data, expiration: date)
     }
     
     public func remove(atPath path: String) throws {
@@ -87,10 +114,13 @@ extension FileManager: DiskManager {
 }
 
 extension FileAttributeKey {
+    
+    /// The name associated with expiration dates stored as extended attributes.
     static let expirationDate = FileAttributeKey("net.lickability.fileAttributeExpirationDate")
 }
 
-extension FileManager {
+private extension FileManager {
+    
     func extendedAttribute(_ name: String, on path: String) throws -> Data {
         // Get size of attribute data
         var size = getxattr(path, name, nil, 0, 0, 0)
@@ -122,7 +152,7 @@ extension FileManager {
     }
 }
 
-struct ExtendedAttributeError: Error {
+private struct ExtendedAttributeError: Error {
     let code: Int32
     let name: String
     let description: String

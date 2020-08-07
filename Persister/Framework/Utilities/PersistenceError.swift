@@ -11,9 +11,9 @@ import Foundation
 /// A list of possible errors encountered in persistence.
 public enum PersistenceError: Error {
     
-    /// Cached object has reached its expiration date.
-    case objectIsExpired
+    /// Persisted item has reached its expiration date.
+    case itemIsExpired
     
-    /// The object attempting to be accessed by the given key does not exist in persistence.
+    /// The item attempting to be accessed by the given key does not exist in persistence.
     case noValidDataForKey
 }

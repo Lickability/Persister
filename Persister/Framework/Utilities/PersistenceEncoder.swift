@@ -8,8 +8,12 @@
 
 import Foundation
 
+/// Describes a type capable of encoding items into `Data`.
 public protocol PersistenceEncoder {
-    func encode<T: Encodable>(_ value: T) throws -> Data
+    
+    /// Encodes the specified item into `Data`.
+    /// - Parameter item: The item to encode.
+    func encode<T: Encodable>(_ item: T) throws -> Data
 }
 
 extension JSONEncoder: PersistenceEncoder { }

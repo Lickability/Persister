@@ -61,9 +61,9 @@ extension DiskCache: Cache {
             if let expirationDate = entry.expiration, expirationDate < Date() {
                 try? remove(forKey: key)
                 
-                throw PersistenceError.objectIsExpired
+                throw PersistenceError.itemIsExpired
             } else {
-                return try decoder.decode(T.self, from: entry.object)
+                return try decoder.decode(T.self, from: entry.item)
             }
         } else {
             throw PersistenceError.noValidDataForKey

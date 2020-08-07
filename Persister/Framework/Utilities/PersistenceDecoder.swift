@@ -8,7 +8,11 @@
 
 import Foundation
 
+/// Describes a type capable of decoding items from `Data`.
 public protocol PersistenceDecoder {
+    
+    /// Encodes the specified item into `Data`.
+    /// - Parameter item: The item to encode.
     func decode<T: Decodable>(_ type: T.Type, from data: Data) throws -> T
 }
 

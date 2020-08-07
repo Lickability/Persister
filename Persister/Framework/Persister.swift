@@ -10,7 +10,6 @@ import Foundation
 
 /// Caches items in memory and on disk using the underlying caches provided on `init`. Items are attempted to be read from memory first before using the disk cache.
 public struct Persister {
-    
     private let memoryCache: Cache
     private let diskCache: Cache
     

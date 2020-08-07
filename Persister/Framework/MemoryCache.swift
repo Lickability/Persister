@@ -21,7 +21,7 @@ public struct MemoryCache {
     
     /// Creates a new `MemoryCache`.
     /// - Parameters:
-    ///   - capacity: The capacity to use for the cache. If the capacity is reached, the least recently used object will be evicted from the cache.
+    ///   - capacity: The capacity to use for the cache. If the capacity is reached, the least recently used item will be evicted from the cache.
     ///   - expirationPolicy: Determines when newly written items are considered expired. Defaults to expire items in 10 minutes (600 seconds).
     public init(capacity: CacheCapacity, expirationPolicy: CacheExpirationPolicy = .afterInterval(600)) {
         self.cache = LRUCache(capacity: capacity)

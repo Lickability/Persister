@@ -10,8 +10,8 @@ import Foundation
 
 /// A Dictionary-like collection that synchronizes access to its contents via GCD.
 final class SynchronizedDictionary<Key, Value> where Key: Hashable {
-    fileprivate var storage: [Key: Value] = [:]
-    fileprivate let queue: DispatchQueue = DispatchQueue(label: "com.lickability.synchronized-dictionary", attributes: [.concurrent])
+    private var storage: [Key: Value] = [:]
+    private let queue: DispatchQueue = DispatchQueue(label: "com.lickability.synchronized-dictionary", attributes: [.concurrent])
     
     /// Initializes an empty `SynchronizedDictionary`.
     init() { }
@@ -35,13 +35,6 @@ extension SynchronizedDictionary: Sequence {
     }
 }
 
-// We explicitly don’t conform to `Swift.Collection` because `Swift.Collection`
-// makes certain requirements that are difficult to fulfill when we want just a
-// simple wrapper around `Dictionary`. To meet said requirements, we'd have to
-// implement a number of new types, rather than being able to reuse existing
-// `Dictionary` types like we are in this implementation. As a result, we don't
-// conform to `Swift.Collection` and instead explicitly implement methods and
-// properties that `Swift.Collection` would have given us for free.
 extension SynchronizedDictionary {
     
     /// A collection containing just the values of the dictionary.
@@ -58,10 +51,9 @@ extension SynchronizedDictionary {
         }
     }
     
-    /// Removes the given key and its associated value from the dictionary.
+    /// Removes the given key and its associated value from the dictionary and returns it if it was found.
     ///
     /// - Parameter key: The key to remove along with its associated value.
-    /// - Returns: The value that was removed, or `nil` if the key was not present in the dictionary.
     @discardableResult func removeValue(forKey key: Key) -> Value? {
         return queue.sync {
             return storage.removeValue(forKey: key)
@@ -77,10 +69,8 @@ extension SynchronizedDictionary {
 
 extension SynchronizedDictionary {
     
-    /// Accesses the value associated with the given key for reading and writing.
-    ///
+    /// Accesses the value associated with the given key for reading and writing. Returns `nil` if not found.
     /// - Parameter key: The key to find in the dictionary.
-    /// - Returns: The value associated with `key` if `key` is in the dictionary; otherwise, `nil`.
     subscript(key: Key) -> Value? {
         get {
             return queue.sync {
