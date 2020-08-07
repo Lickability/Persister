@@ -1,5 +1,5 @@
 //
-//  PersistenceBehavior.swift
+//  Persister.swift
 //  Persister
 //
 //  Created by Twig on 5/16/19.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct PersistenceBehavior {
+public struct Persister {
     
     private let memoryCacheBehavior: Cache
     private let diskCacheBehavior: Cache
@@ -19,7 +19,7 @@ public struct PersistenceBehavior {
     }
 }
 
-extension PersistenceBehavior: Cache {
+extension Persister: Cache {
     
     // MARK: - Cache
     
