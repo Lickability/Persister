@@ -8,7 +8,7 @@
 
 import Foundation
 
-/// Describes a type capable of caching items in memory.
+/// Describes a type capable of caching items in memory. Items are purged based on least recent usage depending on the value for `capacity` passed on `init`.
 public struct MemoryCache {
     
     // MARK: - Cache
@@ -21,10 +21,10 @@ public struct MemoryCache {
     
     /// Creates a new `MemoryCache`.
     /// - Parameters:
-    ///   - cache: The underlying cache used to store / recall items.
+    ///   - capacity: Determines how many items can exist in a cache.
     ///   - expirationPolicy: Determines when newly written items are considered expired. Defaults to expire items in 10 minutes (600 seconds).
-    public init(cache: LRUCache<String, Any>, expirationPolicy: CacheExpirationPolicy = .afterInterval(600)) {
-        self.cache = cache
+    public init(capacity: CacheCapacity, expirationPolicy: CacheExpirationPolicy = .afterInterval(600)) {
+        self.cache = LRUCache(capacity: capacity)
         self.expirationPolicy = expirationPolicy
     }
 }

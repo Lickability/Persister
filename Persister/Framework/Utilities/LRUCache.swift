@@ -10,7 +10,7 @@ import UIKit
 
 public final class LRUCache<Key: Hashable, Value> {
     
-    private let capacity: UInt
+    private let capacity: CacheCapacity
     private var keysOrderedByRecentUse = [Key]()
     private var backingStoreDictionary = SynchronizedDictionary<Key, Value>()
     private var expirationDictionary = SynchronizedDictionary<Key, Date>()
@@ -18,7 +18,7 @@ public final class LRUCache<Key: Hashable, Value> {
     /// Initializes an LRUCache with the given parameters.
     ///
     /// - Parameter capacity: The capacity to use for the cache. If the capacity is reached, the least recently used object will be evicted from the cache.
-    public init(capacity: UInt) {
+    public init(capacity: CacheCapacity) {
         self.capacity = capacity
         
         NotificationCenter.default.addObserver(self, selector: #selector(didReceiveMemoryWarning), name: UIApplication.didReceiveMemoryWarningNotification, object: nil)
@@ -42,10 +42,12 @@ public final class LRUCache<Key: Hashable, Value> {
         
         expirationDictionary[key] = date
         
-        if keysOrderedByRecentUse.count > capacity {
-            if let leastRecentlyUsedKey = keysOrderedByRecentUse.popLast() {
-                backingStoreDictionary[leastRecentlyUsedKey] = nil
-            }
+        switch capacity {
+        case .unlimited:
+            break
+        case let .limited(numberOfItems):
+            guard keysOrderedByRecentUse.count > numberOfItems, let leastRecentlyUsedKey = keysOrderedByRecentUse.popLast() else { break }
+            backingStoreDictionary[leastRecentlyUsedKey] = nil
         }
     }
     
