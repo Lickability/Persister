@@ -9,7 +9,7 @@
 import Foundation
 
 /// Caches items on disk.
-public final class DiskCache: Cache {
+public final class DiskCache {
     
     // MARK: - Cache
     
@@ -21,7 +21,14 @@ public final class DiskCache: Cache {
     private let decoder: PersistenceDecoder
     private let diskManager: DiskManager
     private let rootDirectoryURL: URL
-    
+
+    /// Creates a new `DiskCache`.
+    /// - Parameters:
+    ///   - encoder: The object used to encode items to be stored on disk.
+    ///   - decoder: The object used to decode items read from disk.
+    ///   - rootDirectoryURL: The root directory in which items will be stored.
+    ///   - diskManager: The disk manager responsible for file operations.
+    ///   - expirationPolicy: Determines when newly written items are considered expired. Defaults to expire items in one hour (3600 seconds).
     public init(encoder: PersistenceEncoder = JSONEncoder(), decoder: PersistenceDecoder = JSONDecoder(), rootDirectoryURL: URL, diskManager: DiskManager = FileManager.default, expirationPolicy: CacheExpirationPolicy = .afterInterval(3600)) {
         self.encoder = encoder
         self.decoder = decoder
@@ -31,6 +38,11 @@ public final class DiskCache: Cache {
         
         try? removeExpired()
     }
+}
+
+extension DiskCache: Cache {
+    
+    // MARK: - Cache
     
     public func write<T: Codable>(item: T, forKey key: String) throws {
         try diskManager.createDirectoryIfNecessary(directoryURL: rootDirectoryURL)
@@ -71,7 +83,7 @@ public final class DiskCache: Cache {
     public func removeExpired() throws {
         try diskManager.removeExpiredContentsOfDirectory(at: rootDirectoryURL)
     }
-        
+    
     private func persistencePath(forKey key: String) -> String {
         return rootDirectoryURL.appendingPathComponent(key).path
     }
