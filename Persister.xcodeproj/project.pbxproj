@@ -82,6 +82,26 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4C0A30A624E7156F00E80753 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				4C0A30A724E7161500E80753 /* Persister */,
+			);
+			path = Sources;
+			sourceTree = SOURCE_ROOT;
+		};
+		4C0A30A724E7161500E80753 /* Persister */ = {
+			isa = PBXGroup;
+			children = (
+				4C3DAF2424D4AD8D007F1857 /* Cache.swift */,
+				4C3DAF2524D4AD8D007F1857 /* Persister.swift */,
+				4C3DAF2624D4AD8D007F1857 /* MemoryCache.swift */,
+				4C3DAF2224D4AD8D007F1857 /* DiskCache.swift */,
+				4C3CA71724DDDE1C00003CCF /* Utilities */,
+			);
+			path = Persister;
+			sourceTree = "<group>";
+		};
 		4C3CA71724DDDE1C00003CCF /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
@@ -101,7 +121,8 @@
 			isa = PBXGroup;
 			children = (
 				4C3DAEF524D4AD2B007F1857 /* Persister */,
-				4C3DAF0C24D4AD2D007F1857 /* PersisterTests */,
+				4C3DAF1824D4AD58007F1857 /* Example */,
+				4C3DAF0C24D4AD2D007F1857 /* Tests */,
 				4C3DAEF424D4AD2B007F1857 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -118,7 +139,7 @@
 		4C3DAEF524D4AD2B007F1857 /* Persister */ = {
 			isa = PBXGroup;
 			children = (
-				4C3DAF1824D4AD58007F1857 /* Example */,
+				4C0A30A624E7156F00E80753 /* Sources */,
 				4C3DAF1924D4AD78007F1857 /* Framework */,
 			);
 			path = Persister;
@@ -132,13 +153,13 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		4C3DAF0C24D4AD2D007F1857 /* PersisterTests */ = {
+		4C3DAF0C24D4AD2D007F1857 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
 				4C3DAF3324D4AE55007F1857 /* LRUCacheTests.swift */,
 				4C3DAF0F24D4AD2D007F1857 /* Info.plist */,
 			);
-			path = PersisterTests;
+			path = Tests;
 			sourceTree = "<group>";
 		};
 		4C3DAF1824D4AD58007F1857 /* Example */ = {
@@ -158,11 +179,6 @@
 		4C3DAF1924D4AD78007F1857 /* Framework */ = {
 			isa = PBXGroup;
 			children = (
-				4C3DAF2424D4AD8D007F1857 /* Cache.swift */,
-				4C3DAF2524D4AD8D007F1857 /* Persister.swift */,
-				4C3DAF2624D4AD8D007F1857 /* MemoryCache.swift */,
-				4C3DAF2224D4AD8D007F1857 /* DiskCache.swift */,
-				4C3CA71724DDDE1C00003CCF /* Utilities */,
 			);
 			path = Framework;
 			sourceTree = "<group>";
@@ -435,10 +451,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "\"Persister/Example/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"Example/Preview Content\"";
 				DEVELOPMENT_TEAM = JL4AKR8DVC;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = Persister/Example/Info.plist;
+				INFOPLIST_FILE = Example/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -455,10 +471,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "\"Persister/Example/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"Example/Preview Content\"";
 				DEVELOPMENT_TEAM = JL4AKR8DVC;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = Persister/Example/Info.plist;
+				INFOPLIST_FILE = Example/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -477,7 +493,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = JL4AKR8DVC;
-				INFOPLIST_FILE = PersisterTests/Info.plist;
+				INFOPLIST_FILE = Tests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -499,7 +515,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = JL4AKR8DVC;
-				INFOPLIST_FILE = PersisterTests/Info.plist;
+				INFOPLIST_FILE = Tests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
