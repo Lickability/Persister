@@ -97,6 +97,7 @@
 				4C3DAF2524D4AD8D007F1857 /* Persister.swift */,
 				4C3DAF2624D4AD8D007F1857 /* MemoryCache.swift */,
 				4C3DAF2224D4AD8D007F1857 /* DiskCache.swift */,
+				4CC780D624DDB38600B5C5F8 /* PersistenceError.swift */,
 				4C3CA71724DDDE1C00003CCF /* Utilities */,
 			);
 			path = Persister;
@@ -106,7 +107,6 @@
 			isa = PBXGroup;
 			children = (
 				4C3CA71824DDDFBE00003CCF /* CacheCapacity.swift */,
-				4CC780D624DDB38600B5C5F8 /* PersistenceError.swift */,
 				4C3DAF1B24D4AD8D007F1857 /* LRUCache.swift */,
 				4C3DAF1C24D4AD8D007F1857 /* SynchronizedDictionary.swift */,
 				4C3DAF1E24D4AD8D007F1857 /* PersistenceEncoder.swift */,

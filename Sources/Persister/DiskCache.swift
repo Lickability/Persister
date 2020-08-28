@@ -49,9 +49,12 @@ extension DiskCache: Cache {
 
         let filePath = persistencePath(forKey: key)
         
-        let data = try encoder.encode(item)
-        
-        diskManager.write(data, toPath: filePath, expiresOn: expirationPolicy.expirationDate(from: Date()))
+        do {
+            let data = try encoder.encode(item)
+            diskManager.write(data, toPath: filePath, expiresOn: expirationPolicy.expirationDate(from: Date()))
+        } catch {
+            throw PersistenceError.encodingError(error)
+        }
     }
     
     public func read<T: Decodable>(forKey key: String) throws -> T? {
