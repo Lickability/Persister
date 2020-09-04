@@ -17,9 +17,9 @@
 		4C3DAF0324D4AD2C007F1857 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C3DAF0124D4AD2C007F1857 /* LaunchScreen.storyboard */; };
 		4C3DAF2824D4AD8D007F1857 /* LRUCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3DAF1B24D4AD8D007F1857 /* LRUCache.swift */; };
 		4C3DAF2924D4AD8D007F1857 /* SynchronizedDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3DAF1C24D4AD8D007F1857 /* SynchronizedDictionary.swift */; };
-		4C3DAF2A24D4AD8D007F1857 /* PersistenceEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3DAF1E24D4AD8D007F1857 /* PersistenceEncoder.swift */; };
+		4C3DAF2A24D4AD8D007F1857 /* ItemEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3DAF1E24D4AD8D007F1857 /* ItemEncoder.swift */; };
 		4C3DAF2B24D4AD8D007F1857 /* DiskManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3DAF1F24D4AD8D007F1857 /* DiskManager.swift */; };
-		4C3DAF2D24D4AD8D007F1857 /* PersistenceDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3DAF2124D4AD8D007F1857 /* PersistenceDecoder.swift */; };
+		4C3DAF2D24D4AD8D007F1857 /* ItemDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3DAF2124D4AD8D007F1857 /* ItemDecoder.swift */; };
 		4C3DAF2E24D4AD8D007F1857 /* DiskCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3DAF2224D4AD8D007F1857 /* DiskCache.swift */; };
 		4C3DAF2F24D4AD8D007F1857 /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3DAF2424D4AD8D007F1857 /* Cache.swift */; };
 		4C3DAF3024D4AD8D007F1857 /* Persister.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3DAF2524D4AD8D007F1857 /* Persister.swift */; };
@@ -53,9 +53,9 @@
 		4C3DAF0F24D4AD2D007F1857 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4C3DAF1B24D4AD8D007F1857 /* LRUCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LRUCache.swift; sourceTree = "<group>"; };
 		4C3DAF1C24D4AD8D007F1857 /* SynchronizedDictionary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SynchronizedDictionary.swift; sourceTree = "<group>"; };
-		4C3DAF1E24D4AD8D007F1857 /* PersistenceEncoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistenceEncoder.swift; sourceTree = "<group>"; };
+		4C3DAF1E24D4AD8D007F1857 /* ItemEncoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemEncoder.swift; sourceTree = "<group>"; };
 		4C3DAF1F24D4AD8D007F1857 /* DiskManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiskManager.swift; sourceTree = "<group>"; };
-		4C3DAF2124D4AD8D007F1857 /* PersistenceDecoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistenceDecoder.swift; sourceTree = "<group>"; };
+		4C3DAF2124D4AD8D007F1857 /* ItemDecoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemDecoder.swift; sourceTree = "<group>"; };
 		4C3DAF2224D4AD8D007F1857 /* DiskCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiskCache.swift; sourceTree = "<group>"; };
 		4C3DAF2424D4AD8D007F1857 /* Cache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
 		4C3DAF2524D4AD8D007F1857 /* Persister.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Persister.swift; sourceTree = "<group>"; };
@@ -109,8 +109,8 @@
 				4C3CA71824DDDFBE00003CCF /* CacheCapacity.swift */,
 				4C3DAF1B24D4AD8D007F1857 /* LRUCache.swift */,
 				4C3DAF1C24D4AD8D007F1857 /* SynchronizedDictionary.swift */,
-				4C3DAF1E24D4AD8D007F1857 /* PersistenceEncoder.swift */,
-				4C3DAF2124D4AD8D007F1857 /* PersistenceDecoder.swift */,
+				4C3DAF1E24D4AD8D007F1857 /* ItemEncoder.swift */,
+				4C3DAF2124D4AD8D007F1857 /* ItemDecoder.swift */,
 				4C3CA71A24DDE18300003CCF /* CacheExpirationPolicy.swift */,
 				4C3DAF1F24D4AD8D007F1857 /* DiskManager.swift */,
 			);
@@ -284,7 +284,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4C3DAF2A24D4AD8D007F1857 /* PersistenceEncoder.swift in Sources */,
+				4C3DAF2A24D4AD8D007F1857 /* ItemEncoder.swift in Sources */,
 				4C3DAF2F24D4AD8D007F1857 /* Cache.swift in Sources */,
 				4C3DAF2924D4AD8D007F1857 /* SynchronizedDictionary.swift in Sources */,
 				4C3DAF2824D4AD8D007F1857 /* LRUCache.swift in Sources */,
@@ -294,7 +294,7 @@
 				4C3DAEF724D4AD2B007F1857 /* AppDelegate.swift in Sources */,
 				4C3DAEF924D4AD2B007F1857 /* SceneDelegate.swift in Sources */,
 				4C3DAEFB24D4AD2B007F1857 /* ContentView.swift in Sources */,
-				4C3DAF2D24D4AD8D007F1857 /* PersistenceDecoder.swift in Sources */,
+				4C3DAF2D24D4AD8D007F1857 /* ItemDecoder.swift in Sources */,
 				4C3DAF2B24D4AD8D007F1857 /* DiskManager.swift in Sources */,
 				4CC780D724DDB38600B5C5F8 /* PersistenceError.swift in Sources */,
 				4C3DAF2E24D4AD8D007F1857 /* DiskCache.swift in Sources */,

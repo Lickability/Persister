@@ -9,10 +9,10 @@
 import Foundation
 
 /// Represents an item stored on disk with its associated expiration date.
-public struct DiskEntry<T: Codable>: Codable {
+public struct DiskEntry<Item: Codable>: Codable {
     
     /// The item stored on disk.
-    public let item: T
+    public let item: Item
     
     /// The item’s expiration date.
     public let expiration: Date?

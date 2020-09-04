@@ -33,11 +33,11 @@ extension MemoryCache: Cache {
     
     // MARK: - Cache
     
-    public func read<T: Codable>(forKey key: String) throws -> T? {
-        return cache[key] as? T
+    public func read<Item: Codable>(forKey key: String) throws -> Item? {
+        return cache[key] as? Item
     }
     
-    public func write<T: Codable>(item: T, forKey key: String) throws {
+    public func write<Item: Codable>(item: Item, forKey key: String) throws {
         cache.write(item, for: key, expiresOn: expirationPolicy.expirationDate(from: Date()))
     }
     
