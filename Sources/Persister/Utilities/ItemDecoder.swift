@@ -12,7 +12,9 @@ import Foundation
 public protocol ItemDecoder {
     
     /// Attempts to decode the `Data` into an instance of the specified type.
-    /// - Parameter type: The item to encode.
+    /// - Parameters:
+    ///   - type: The type of the item to decode.
+    ///   - data: The data to decode.
     func decode<Item: Decodable>(_ type: Item.Type, from data: Data) throws -> Item
 }
 
