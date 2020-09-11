@@ -17,8 +17,8 @@ public final class DiskCache {
     
     // MARK: - DiskCache
     
-    private let encoder: PersistenceEncoder
-    private let decoder: PersistenceDecoder
+    private let encoder: ItemEncoder
+    private let decoder: ItemDecoder
     private let diskManager: DiskManager
     private let rootDirectoryURL: URL
 
@@ -29,7 +29,7 @@ public final class DiskCache {
     ///   - rootDirectoryURL: The root directory in which items will be stored.
     ///   - diskManager: The disk manager responsible for file operations.
     ///   - expirationPolicy: Determines when newly written items are considered expired. Defaults to expire items in one hour (3600 seconds).
-    public init(encoder: PersistenceEncoder = JSONEncoder(), decoder: PersistenceDecoder = JSONDecoder(), rootDirectoryURL: URL, diskManager: DiskManager = FileManager.default, expirationPolicy: CacheExpirationPolicy = .afterInterval(3600)) {
+    public init(encoder: ItemEncoder = JSONEncoder(), decoder: ItemDecoder = JSONDecoder(), rootDirectoryURL: URL, diskManager: DiskManager = FileManager.default, expirationPolicy: CacheExpirationPolicy = .afterInterval(3600)) {
         self.encoder = encoder
         self.decoder = decoder
         self.rootDirectoryURL = rootDirectoryURL
@@ -44,17 +44,20 @@ extension DiskCache: Cache {
     
     // MARK: - Cache
     
-    public func write<T: Codable>(item: T, forKey key: String) throws {
+    public func write<Item: Codable>(item: Item, forKey key: String) throws {
         try diskManager.createDirectoryIfNecessary(directoryURL: rootDirectoryURL)
 
         let filePath = persistencePath(forKey: key)
         
-        let data = try encoder.encode(item)
-        
-        diskManager.write(data, toPath: filePath, expiresOn: expirationPolicy.expirationDate(from: Date()))
+        do {
+            let data = try encoder.encode(item)
+            diskManager.write(data, toPath: filePath, expiresOn: expirationPolicy.expirationDate(from: Date()))
+        } catch {
+            throw PersistenceError.encodingError(error)
+        }
     }
     
-    public func read<T: Decodable>(forKey key: String) throws -> T? {
+    public func read<Item: Decodable>(forKey key: String) throws -> Item? {
         let filePath = persistencePath(forKey: key)
         
         if let entry = diskManager.read(atPath: filePath) {
@@ -63,7 +66,7 @@ extension DiskCache: Cache {
                 
                 throw PersistenceError.itemIsExpired
             } else {
-                return try decoder.decode(T.self, from: entry.item)
+                return try decoder.decode(Item.self, from: entry.item)
             }
         } else {
             throw PersistenceError.noValidDataForKey
