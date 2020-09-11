@@ -35,8 +35,6 @@ public final class DiskCache {
         self.rootDirectoryURL = rootDirectoryURL
         self.diskManager = diskManager
         self.expirationPolicy = expirationPolicy
-        
-        try? removeExpired()
     }
 }
 
