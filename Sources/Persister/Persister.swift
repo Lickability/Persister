@@ -32,13 +32,13 @@ extension Persister: Cache {
         return .never
     }
     
-    public func read<Item: Codable>(forKey key: String) throws -> Item? {
-        if let cachedObject: Item = try memoryCache.read(forKey: key) {
+    public func read<Item: Codable>(forKey key: String) throws -> ItemContainer<Item>? {
+        if let cachedObject: ItemContainer<Item> = try memoryCache.read(forKey: key) {
             return cachedObject
         }
         
-        let persistedObject: Item? = try diskCache.read(forKey: key)
-        try memoryCache.write(item: persistedObject, forKey: key)
+        let persistedObject: ItemContainer<Item>? = try diskCache.read(forKey: key)
+        try memoryCache.write(item: persistedObject?.item, forKey: key)
         
         return persistedObject
     }

@@ -16,7 +16,7 @@ public protocol Cache {
     
     /// Reads and returns an item from the cache for the given `key`, if found.
     /// - Parameter key: The key associated with the item when it was written.
-    func read<Item: Codable>(forKey key: String) throws -> Item?
+    func read<Item: Codable>(forKey key: String) throws -> ItemContainer<Item>?
     
     /// Writes an item to the cache.
     /// - Parameters:

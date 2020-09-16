@@ -55,17 +55,13 @@ extension DiskCache: Cache {
         }
     }
     
-    public func read<Item: Decodable>(forKey key: String) throws -> Item? {
+    public func read<Item: Decodable>(forKey key: String) throws -> ItemContainer<Item>? {
         let filePath = persistencePath(forKey: key)
         
         if let entry = diskManager.read(atPath: filePath) {
-            if let expirationDate = entry.expiration, expirationDate < Date() {
-                try? remove(forKey: key)
-                
-                throw PersistenceError.itemIsExpired
-            } else {
-                return try decoder.decode(Item.self, from: entry.item)
-            }
+            let item = try decoder.decode(Item.self, from: entry.item)
+            
+            return ItemContainer(item: item, expirationDate: entry.expiration)
         } else {
             throw PersistenceError.noValidDataForKey
         }
