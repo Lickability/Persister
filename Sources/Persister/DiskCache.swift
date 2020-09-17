@@ -59,9 +59,13 @@ extension DiskCache: Cache {
         let filePath = persistencePath(forKey: key)
         
         if let entry = diskManager.read(atPath: filePath) {
-            let item = try decoder.decode(Item.self, from: entry.item)
-            
-            return ItemContainer(item: item, expirationDate: entry.expiration)
+            do {
+                let item = try decoder.decode(Item.self, from: entry.item)
+                
+                return ItemContainer(item: item, expirationDate: entry.expiration)
+            } catch {
+                throw PersistenceError.decodingError(error)
+            }
         } else {
             throw PersistenceError.noValidDataForKey
         }

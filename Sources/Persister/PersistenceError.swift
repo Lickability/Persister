@@ -17,4 +17,8 @@ public enum PersistenceError: Error {
     /// The item failed to be encoded when writing.
     /// - Parameter error: The error that occurred during encoding.
     case encodingError(_ error: Error)
+    
+    /// The item failed to be decoded when read.
+    /// - Parameter error: The error that occurred during decoding.
+    case decodingError(_ error: Error)
 }
