@@ -9,7 +9,7 @@
 import Foundation
 
 /// Caches items on disk.
-public final class DiskCache {
+public struct DiskCache {
     
     // MARK: - Cache
     
