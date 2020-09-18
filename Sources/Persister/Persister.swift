@@ -8,7 +8,7 @@
 
 import Foundation
 
-/// Caches items in memory and on disk using the underlying caches provided on `init`. Items are attempted to be read from memory first before using the disk cache.
+/// Caches items in memory and on disk using the underlying caches provided on `init`. Items are attempted to be read from memory first before using the disk cache. Expired items will not be automatically removed from the `Persister`, but can be removed using the `removeExpired` function.
 public struct Persister {
     private let memoryCache: Cache
     private let diskCache: Cache
