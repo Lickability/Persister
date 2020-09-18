@@ -9,7 +9,7 @@
 import Foundation
 
 /// A container that holds the item and associated metadata.
-public struct ItemContainer<Item: Codable> {
+public struct ItemContainer<Item: Codable>: Codable {
     
     /// The item that is persisted.
     public let item: Item
