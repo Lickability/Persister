@@ -81,4 +81,14 @@ final class DiskCacheTests: XCTestCase {
         
         wait(for: [expectation], timeout: 5)
     }
+    
+    func testDecodingFailureError() throws {
+        try cache.write(item: TestCodable(), forKey: itemKey)
+                
+        XCTAssertThrowsError(try { let _: ItemContainer<String>? = try self.cache.read(forKey: self.itemKey) }()) { error in
+            guard case PersistenceError.decodingError = error else {
+                return XCTFail()
+            }
+        }
+    }
 }
