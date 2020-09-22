@@ -26,6 +26,12 @@
 		4C3DAF3124D4AD8D007F1857 /* MemoryCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3DAF2624D4AD8D007F1857 /* MemoryCache.swift */; };
 		4C3DAF3424D4AE55007F1857 /* LRUCacheTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3DAF3324D4AE55007F1857 /* LRUCacheTests.swift */; };
 		4CC780D724DDB38600B5C5F8 /* PersistenceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CC780D624DDB38600B5C5F8 /* PersistenceError.swift */; };
+		F2619B8F251290F50083286C /* ItemContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2619B8E251290F50083286C /* ItemContainer.swift */; };
+		F2A3BDDB2519444A0060354F /* DiskManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2A3BDDA2519444A0060354F /* DiskManagerTests.swift */; };
+		F2A3BDDF251947AE0060354F /* MemoryCacheTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2A3BDDE251947AE0060354F /* MemoryCacheTests.swift */; };
+		F2A3BDE3251947FA0060354F /* TestCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2A3BDE2251947FA0060354F /* TestCodable.swift */; };
+		F2A3BDE725194A150060354F /* DiskCacheTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2A3BDE625194A150060354F /* DiskCacheTests.swift */; };
+		F2A3BDEB25194BF20060354F /* PersisterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2A3BDEA25194BF20060354F /* PersisterTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,6 +68,12 @@
 		4C3DAF2624D4AD8D007F1857 /* MemoryCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemoryCache.swift; sourceTree = "<group>"; };
 		4C3DAF3324D4AE55007F1857 /* LRUCacheTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LRUCacheTests.swift; sourceTree = "<group>"; };
 		4CC780D624DDB38600B5C5F8 /* PersistenceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceError.swift; sourceTree = "<group>"; };
+		F2619B8E251290F50083286C /* ItemContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemContainer.swift; sourceTree = "<group>"; };
+		F2A3BDDA2519444A0060354F /* DiskManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiskManagerTests.swift; sourceTree = "<group>"; };
+		F2A3BDDE251947AE0060354F /* MemoryCacheTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryCacheTests.swift; sourceTree = "<group>"; };
+		F2A3BDE2251947FA0060354F /* TestCodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestCodable.swift; sourceTree = "<group>"; };
+		F2A3BDE625194A150060354F /* DiskCacheTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiskCacheTests.swift; sourceTree = "<group>"; };
+		F2A3BDEA25194BF20060354F /* PersisterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersisterTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +110,7 @@
 				4C3DAF2624D4AD8D007F1857 /* MemoryCache.swift */,
 				4C3DAF2224D4AD8D007F1857 /* DiskCache.swift */,
 				4CC780D624DDB38600B5C5F8 /* PersistenceError.swift */,
+				F2619B8E251290F50083286C /* ItemContainer.swift */,
 				4C3CA71724DDDE1C00003CCF /* Utilities */,
 			);
 			path = Persister;
@@ -157,6 +170,11 @@
 			isa = PBXGroup;
 			children = (
 				4C3DAF3324D4AE55007F1857 /* LRUCacheTests.swift */,
+				F2A3BDDA2519444A0060354F /* DiskManagerTests.swift */,
+				F2A3BDDE251947AE0060354F /* MemoryCacheTests.swift */,
+				F2A3BDE625194A150060354F /* DiskCacheTests.swift */,
+				F2A3BDEA25194BF20060354F /* PersisterTests.swift */,
+				F2A3BDE2251947FA0060354F /* TestCodable.swift */,
 				4C3DAF0F24D4AD2D007F1857 /* Info.plist */,
 			);
 			path = Tests;
@@ -284,6 +302,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F2619B8F251290F50083286C /* ItemContainer.swift in Sources */,
 				4C3DAF2A24D4AD8D007F1857 /* ItemEncoder.swift in Sources */,
 				4C3DAF2F24D4AD8D007F1857 /* Cache.swift in Sources */,
 				4C3DAF2924D4AD8D007F1857 /* SynchronizedDictionary.swift in Sources */,
@@ -306,6 +325,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F2A3BDE725194A150060354F /* DiskCacheTests.swift in Sources */,
+				F2A3BDDB2519444A0060354F /* DiskManagerTests.swift in Sources */,
+				F2A3BDDF251947AE0060354F /* MemoryCacheTests.swift in Sources */,
+				F2A3BDEB25194BF20060354F /* PersisterTests.swift in Sources */,
+				F2A3BDE3251947FA0060354F /* TestCodable.swift in Sources */,
 				4C3DAF3424D4AE55007F1857 /* LRUCacheTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

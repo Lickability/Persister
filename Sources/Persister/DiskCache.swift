@@ -9,7 +9,7 @@
 import Foundation
 
 /// Caches items on disk.
-public final class DiskCache {
+public struct DiskCache {
     
     // MARK: - Cache
     
@@ -55,16 +55,16 @@ extension DiskCache: Cache {
         }
     }
     
-    public func read<Item: Decodable>(forKey key: String) throws -> Item? {
+    public func read<Item: Decodable>(forKey key: String) throws -> ItemContainer<Item>? {
         let filePath = persistencePath(forKey: key)
         
         if let entry = diskManager.read(atPath: filePath) {
-            if let expirationDate = entry.expiration, expirationDate < Date() {
-                try? remove(forKey: key)
+            do {
+                let item = try decoder.decode(Item.self, from: entry.item)
                 
-                throw PersistenceError.itemIsExpired
-            } else {
-                return try decoder.decode(Item.self, from: entry.item)
+                return ItemContainer(item: item, expirationDate: entry.expiration)
+            } catch {
+                throw PersistenceError.decodingError(error)
             }
         } else {
             throw PersistenceError.noValidDataForKey

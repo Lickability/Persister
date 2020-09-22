@@ -33,12 +33,15 @@ extension MemoryCache: Cache {
     
     // MARK: - Cache
     
-    public func read<Item: Codable>(forKey key: String) throws -> Item? {
-        return cache[key] as? Item
+    public func read<Item: Codable>(forKey key: String) throws -> ItemContainer<Item>? {
+        return cache[key] as? ItemContainer<Item>
     }
     
     public func write<Item: Codable>(item: Item, forKey key: String) throws {
-        cache.write(item, for: key, expiresOn: expirationPolicy.expirationDate(from: Date()))
+        let expirationDate = expirationPolicy.expirationDate(from: Date())
+        let container = ItemContainer(item: item, expirationDate: expirationDate)
+        
+        cache.write(container, for: key, expiresOn: expirationDate)
     }
     
     public func remove(forKey key: String) throws {
