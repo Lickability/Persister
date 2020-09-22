@@ -65,7 +65,10 @@ final class PersisterTests: XCTestCase {
     func testRemovingExpiredItems() throws {
         let expectation = XCTestExpectation(description: "Only one item should have been removed.")
         
-        let cache = MemoryCache(capacity: .unlimited, expirationPolicy: .afterInterval(1))
+        let memoryCache: Cache = MemoryCache(capacity: .unlimited, expirationPolicy: .afterInterval(1))
+        let diskCache: Cache = DiskCache(rootDirectoryURL: diskURL, expirationPolicy: .afterInterval(1))
+        let cache: Cache = Persister(memoryCache: memoryCache, diskCache: diskCache)
+
         try cache.write(item: TestCodable(), forKey: itemKey)
                 
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
@@ -83,24 +86,5 @@ final class PersisterTests: XCTestCase {
         }
         
         wait(for: [expectation], timeout: 5)
-    }
-    
-    func testCacheLimit() throws {
-        let cache = MemoryCache(capacity: .limited(numberOfItems: 3), expirationPolicy: .never)
-        
-        try cache.write(item: TestCodable(), forKey: "1")
-        try cache.write(item: TestCodable(), forKey: "2")
-        try cache.write(item: TestCodable(), forKey: "3")
-        try cache.write(item: TestCodable(), forKey: "4")
-        
-        let item1: ItemContainer<TestCodable>? = try cache.read(forKey: "1")
-        let item2: ItemContainer<TestCodable>? = try cache.read(forKey: "2")
-        let item3: ItemContainer<TestCodable>? = try cache.read(forKey: "3")
-        let item4: ItemContainer<TestCodable>? = try cache.read(forKey: "4")
-
-        XCTAssertNil(item1)
-        XCTAssertNotNil(item2)
-        XCTAssertNotNil(item3)
-        XCTAssertNotNil(item4)
     }
 }
