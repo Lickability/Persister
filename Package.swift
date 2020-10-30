@@ -6,7 +6,7 @@ import PackageDescription
 let name = "Persister"
 let package = Package(
     name: name,
-	defaultLocalization: "en",
+    defaultLocalization: "en",
     platforms: [.iOS(.v13)],
     products: [.library(name: name, targets: [name])],
     targets: [.target(name: name, resources: [.process("Resources")])]
