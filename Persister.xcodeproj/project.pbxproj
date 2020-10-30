@@ -32,6 +32,7 @@
 		F2A3BDE3251947FA0060354F /* TestCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2A3BDE2251947FA0060354F /* TestCodable.swift */; };
 		F2A3BDE725194A150060354F /* DiskCacheTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2A3BDE625194A150060354F /* DiskCacheTests.swift */; };
 		F2A3BDEB25194BF20060354F /* PersisterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2A3BDEA25194BF20060354F /* PersisterTests.swift */; };
+		F2BE3771254CAC1F0062C317 /* en.lproj in Resources */ = {isa = PBXBuildFile; fileRef = F2BE3770254CAC1F0062C317 /* en.lproj */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -74,6 +75,7 @@
 		F2A3BDE2251947FA0060354F /* TestCodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestCodable.swift; sourceTree = "<group>"; };
 		F2A3BDE625194A150060354F /* DiskCacheTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiskCacheTests.swift; sourceTree = "<group>"; };
 		F2A3BDEA25194BF20060354F /* PersisterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersisterTests.swift; sourceTree = "<group>"; };
+		F2BE3770254CAC1F0062C317 /* en.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; path = en.lproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +107,7 @@
 		4C0A30A724E7161500E80753 /* Persister */ = {
 			isa = PBXGroup;
 			children = (
+				F2BE3768254CAC120062C317 /* Resources */,
 				4C3DAF2424D4AD8D007F1857 /* Cache.swift */,
 				4C3DAF2524D4AD8D007F1857 /* Persister.swift */,
 				4C3DAF2624D4AD8D007F1857 /* MemoryCache.swift */,
@@ -201,6 +204,14 @@
 			path = Framework;
 			sourceTree = "<group>";
 		};
+		F2BE3768254CAC120062C317 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				F2BE3770254CAC1F0062C317 /* en.lproj */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -282,6 +293,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F2BE3771254CAC1F0062C317 /* en.lproj in Resources */,
 				4C3DAF0324D4AD2C007F1857 /* LaunchScreen.storyboard in Resources */,
 				4C3DAF0024D4AD2C007F1857 /* Preview Assets.xcassets in Resources */,
 				4C3DAEFD24D4AD2C007F1857 /* Assets.xcassets in Resources */,
