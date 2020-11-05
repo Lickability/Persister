@@ -47,6 +47,10 @@ public protocol DiskManager {
     /// Removes only expired items in the directory at the specified `URL`.
     /// - Parameter url: The `URL` whose expired items are to be deleted.
     func removeExpiredContentsOfDirectory(at url: URL) throws
+    
+    /// Returns the contents of the directory at the specified `URL`.
+    /// - Parameter url: The `URL` whose contents are to be retrieved.
+    func contentsOfDirectory(at url: URL) throws -> [DiskEntry<Data>]
 }
 
 extension FileManager: DiskManager {
@@ -110,6 +114,12 @@ extension FileManager: DiskManager {
                 }
             }
         }
+    }
+    
+    public func contentsOfDirectory(at url: URL) throws -> [DiskEntry<Data>] {
+        let contentURLs = try contentsOfDirectory(at: url, includingPropertiesForKeys: nil, options: [])
+        
+        return contentURLs.compactMap { read(atPath: $0.path) }
     }
 }
 

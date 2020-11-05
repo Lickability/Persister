@@ -89,6 +89,10 @@ public final class LRUCache<Key: Hashable, Value> {
         expirationDictionary.removeAll()
     }
     
+    public func allItems() -> [Value] {
+        return Array(backingStoreDictionary.values)
+    }
+    
     /// Removes all expired items from the cache.
     public func removeExpired() {
         let expirationDictionary = self.expirationDictionary

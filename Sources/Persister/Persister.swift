@@ -70,4 +70,11 @@ extension Persister: Cache {
         try memoryCache.removeExpired()
         try diskCache.removeExpired()
     }
+    
+    public func allItems<Item: Codable>() throws -> [ItemContainer<Item>] {
+        let memoryItems: [ItemContainer<Item>] = try memoryCache.allItems()
+        let diskItems: [ItemContainer<Item>] = try diskCache.allItems()
+        
+        return memoryItems + diskItems
+    }
 }

@@ -59,4 +59,8 @@ extension MemoryCache: Cache {
         objectWillChange.send()
         cache.removeExpired()
     }
+    
+    public func allItems<Item: Codable>() throws -> [ItemContainer<Item>] {
+        return cache.allItems().compactMap { $0 as? ItemContainer<Item> }
+    }
 }

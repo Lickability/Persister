@@ -33,6 +33,8 @@ public protocol Cache {
     
     /// Removes all expired items from the cache.
     func removeExpired() throws
+    
+    func allItems<Item: Codable>() throws -> [ItemContainer<Item>]
 }
 
 extension Cache {

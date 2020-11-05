@@ -84,6 +84,20 @@ extension DiskCache: Cache {
     public func removeExpired() throws {
         try diskManager.removeExpiredContentsOfDirectory(at: rootDirectoryURL)
     }
+        
+    public func allItems<Item: Codable>() throws -> [ItemContainer<Item>] {
+        let entries = try diskManager.contentsOfDirectory(at: rootDirectoryURL)
+        
+        return try entries.compactMap {
+            do {
+                let item = try decoder.decode(Item.self, from: $0.item)
+                
+                return ItemContainer(item: item, expirationDate: $0.expiration)
+            } catch {
+                throw PersistenceError.decodingError(error)
+            }
+        }
+    }
     
     private func persistencePath(forKey key: String) -> String {
         return rootDirectoryURL.appendingPathComponent(key).path
