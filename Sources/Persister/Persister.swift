@@ -9,7 +9,7 @@
 import Foundation
 
 /// Caches items in memory and on disk using the underlying caches provided on `init`. Items are attempted to be read from memory first before using the disk cache. Expired items will not be automatically removed from the `Persister`, but can be removed using the `removeExpired` function.
-public struct Persister {
+public class Persister: ObservableObject {
     private let memoryCache: Cache
     private let diskCache: Cache
     
@@ -44,21 +44,29 @@ extension Persister: Cache {
     }
     
     public func write<Item: Codable>(item: Item, forKey key: String) throws {
+        objectWillChange.send()
+        
         try memoryCache.write(item: item, forKey: key)
         try diskCache.write(item: item, forKey: key)
     }
     
     public func remove(forKey key: String) throws {
+        objectWillChange.send()
+
         try memoryCache.remove(forKey: key)
         try diskCache.remove(forKey: key)
     }
     
     public func removeAll() throws {
+        objectWillChange.send()
+
         try memoryCache.removeAll()
         try diskCache.removeAll()
     }
     
     public func removeExpired() throws {
+        objectWillChange.send()
+
         try memoryCache.removeExpired()
         try diskCache.removeExpired()
     }
