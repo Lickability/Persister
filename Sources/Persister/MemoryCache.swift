@@ -9,7 +9,7 @@
 import Foundation
 
 /// Caches items in memory. Items are purged based on least recent usage depending on the value for `capacity` passed on `init`.
-public class MemoryCache: ObservableObject {
+public class MemoryCache {
     
     // MARK: - Cache
     
@@ -39,24 +39,20 @@ extension MemoryCache: Cache {
     
     public func write<Item: Codable>(item: Item, forKey key: String) throws {
         let expirationDate = expirationPolicy.expirationDate(from: Date())
-        let container = ItemContainer(item: item, expirationDate: expirationDate)
+        let container = ItemContainer(item: item, key: key, expirationDate: expirationDate)
         
-        objectWillChange.send()
         cache.write(container, for: key, expiresOn: expirationDate)
     }
     
     public func remove(forKey key: String) throws {
-        objectWillChange.send()
         cache.removeItem(for: key)
     }
     
     public func removeAll() throws {
-        objectWillChange.send()
         cache.removeAllItems()
     }
     
     public func removeExpired() throws {
-        objectWillChange.send()
         cache.removeExpired()
     }
     

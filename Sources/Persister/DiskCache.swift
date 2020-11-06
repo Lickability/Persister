@@ -9,7 +9,7 @@
 import Foundation
 
 /// Caches items on disk.
-public class DiskCache: ObservableObject {
+public class DiskCache {
     
     // MARK: - Cache
     
@@ -62,7 +62,7 @@ extension DiskCache: Cache {
             do {
                 let item = try decoder.decode(Item.self, from: entry.item)
                 
-                return ItemContainer(item: item, expirationDate: entry.expiration)
+                return ItemContainer(item: item, key: key, expirationDate: entry.expiration)
             } catch {
                 throw PersistenceError.decodingError(error)
             }
@@ -92,7 +92,7 @@ extension DiskCache: Cache {
             do {
                 let item = try decoder.decode(Item.self, from: $0.item)
                 
-                return ItemContainer(item: item, expirationDate: $0.expiration)
+                return ItemContainer(item: item, key: $0.key, expirationDate: $0.expiration)
             } catch {
                 throw PersistenceError.decodingError(error)
             }

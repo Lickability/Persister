@@ -14,6 +14,8 @@ public struct DiskEntry<Item: Codable>: Codable {
     /// The item stored on disk.
     public let item: Item
     
+    public let key: String
+    
     /// The item’s expiration date.
     public let expiration: Date?
 }
@@ -87,7 +89,7 @@ extension FileManager: DiskManager {
             date = nil
         }
         
-        return DiskEntry(item: data, expiration: date)
+        return DiskEntry(item: data, key: path, expiration: date)
     }
     
     public func remove(atPath path: String) throws {

@@ -15,6 +15,8 @@ public struct ItemContainer<Item: Codable>: Codable {
     /// The item that is persisted.
     public let item: Item
     
+    public let key: String
+    
     /// The date the item expires, if it expires.
     public let expirationDate: Date?
     
