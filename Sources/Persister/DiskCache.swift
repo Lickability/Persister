@@ -43,6 +43,10 @@ extension DiskCache: Cache {
     // MARK: - Cache
     
     public func write<Item: Codable>(item: Item, forKey key: String) throws {
+        try write(item: item, forKey: key, expirationPolicy: expirationPolicy)
+    }
+    
+    public func write<Item: Codable>(item: Item, forKey key: String, expirationPolicy: CacheExpirationPolicy) throws {
         try diskManager.createDirectoryIfNecessary(directoryURL: rootDirectoryURL)
 
         let filePath = persistencePath(forKey: key)
