@@ -24,6 +24,13 @@ public protocol Cache {
     ///   - key: The key that can be used to recall the written item later.
     func write<Item: Codable>(item: Item, forKey key: String) throws
     
+    /// Writes an item to cache, providing an expiration policy.
+    /// - Parameters:
+    ///   - item: The item to write to the cache.
+    ///   - key: The key that can be used to recall the written item later.
+    ///   - expirationPolicy: Determines when newly written items are considered expired.
+    func write<Item: Codable>(item: Item, forKey key: String, expirationPolicy: CacheExpirationPolicy) throws
+    
     /// Removes an item associated with the given `key`.
     /// - Parameter key: The key associated with the item when it was written.
     func remove(forKey key: String) throws

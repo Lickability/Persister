@@ -90,4 +90,23 @@ final class MemoryCacheTests: XCTestCase {
         XCTAssertNotNil(item3)
         XCTAssertNotNil(item4)
     }
+    
+    func testUsesCorrectExpirationPolicy() throws {
+        let expectation = XCTestExpectation(description: "Only one item should have been removed.")
+        
+        let cache = MemoryCache(capacity: .unlimited, expirationPolicy: .afterInterval(1))
+        try cache.write(item: TestCodable(), forKey: itemKey, expirationPolicy: .afterInterval(500))
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            
+            try? cache.removeExpired()
+            
+            let item1: ItemContainer<TestCodable>? = try? cache.read(forKey: self.itemKey)
+            
+            XCTAssertNotNil(item1)
+            
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 5)
+    }
 }
