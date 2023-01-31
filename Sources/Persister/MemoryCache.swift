@@ -38,6 +38,10 @@ extension MemoryCache: Cache {
     }
     
     public func write<Item: Codable>(item: Item, forKey key: String) throws {
+        try write(item: item, forKey: key, expirationPolicy: expirationPolicy)
+    }
+    
+    public func write<Item>(item: Item, forKey key: String, expirationPolicy: CacheExpirationPolicy) throws where Item : Decodable, Item : Encodable {
         let expirationDate = expirationPolicy.expirationDate(from: Date())
         let container = ItemContainer(item: item, expirationDate: expirationDate)
         

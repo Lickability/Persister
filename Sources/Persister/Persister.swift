@@ -48,6 +48,11 @@ extension Persister: Cache {
         try diskCache.write(item: item, forKey: key)
     }
     
+    public func write<Item: Codable>(item: Item, forKey key: String, expirationPolicy: CacheExpirationPolicy) throws {
+        try memoryCache.write(item: item, forKey: key, expirationPolicy: expirationPolicy)
+        try diskCache.write(item: item, forKey: key, expirationPolicy: expirationPolicy)
+    }
+    
     public func remove(forKey key: String) throws {
         try memoryCache.remove(forKey: key)
         try diskCache.remove(forKey: key)
