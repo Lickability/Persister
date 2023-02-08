@@ -26,6 +26,7 @@
 		4C3DAF3124D4AD8D007F1857 /* MemoryCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3DAF2624D4AD8D007F1857 /* MemoryCache.swift */; };
 		4C3DAF3424D4AE55007F1857 /* LRUCacheTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C3DAF3324D4AE55007F1857 /* LRUCacheTests.swift */; };
 		4CC780D724DDB38600B5C5F8 /* PersistenceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CC780D624DDB38600B5C5F8 /* PersistenceError.swift */; };
+		F2237E2A2993520900312106 /* SynchronizedArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2237E292993520900312106 /* SynchronizedArray.swift */; };
 		F2619B8F251290F50083286C /* ItemContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2619B8E251290F50083286C /* ItemContainer.swift */; };
 		F2A3BDDB2519444A0060354F /* DiskManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2A3BDDA2519444A0060354F /* DiskManagerTests.swift */; };
 		F2A3BDDF251947AE0060354F /* MemoryCacheTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2A3BDDE251947AE0060354F /* MemoryCacheTests.swift */; };
@@ -69,6 +70,7 @@
 		4C3DAF2624D4AD8D007F1857 /* MemoryCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemoryCache.swift; sourceTree = "<group>"; };
 		4C3DAF3324D4AE55007F1857 /* LRUCacheTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LRUCacheTests.swift; sourceTree = "<group>"; };
 		4CC780D624DDB38600B5C5F8 /* PersistenceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceError.swift; sourceTree = "<group>"; };
+		F2237E292993520900312106 /* SynchronizedArray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SynchronizedArray.swift; sourceTree = "<group>"; };
 		F2619B8E251290F50083286C /* ItemContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemContainer.swift; sourceTree = "<group>"; };
 		F2A3BDDA2519444A0060354F /* DiskManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiskManagerTests.swift; sourceTree = "<group>"; };
 		F2A3BDDE251947AE0060354F /* MemoryCacheTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryCacheTests.swift; sourceTree = "<group>"; };
@@ -125,6 +127,7 @@
 				4C3CA71824DDDFBE00003CCF /* CacheCapacity.swift */,
 				4C3DAF1B24D4AD8D007F1857 /* LRUCache.swift */,
 				4C3DAF1C24D4AD8D007F1857 /* SynchronizedDictionary.swift */,
+				F2237E292993520900312106 /* SynchronizedArray.swift */,
 				4C3DAF1E24D4AD8D007F1857 /* ItemEncoder.swift */,
 				4C3DAF2124D4AD8D007F1857 /* ItemDecoder.swift */,
 				4C3CA71A24DDE18300003CCF /* CacheExpirationPolicy.swift */,
@@ -326,6 +329,7 @@
 				4C3DAEF924D4AD2B007F1857 /* SceneDelegate.swift in Sources */,
 				4C3DAEFB24D4AD2B007F1857 /* ContentView.swift in Sources */,
 				4C3DAF2D24D4AD8D007F1857 /* ItemDecoder.swift in Sources */,
+				F2237E2A2993520900312106 /* SynchronizedArray.swift in Sources */,
 				4C3DAF2B24D4AD8D007F1857 /* DiskManager.swift in Sources */,
 				4CC780D724DDB38600B5C5F8 /* PersistenceError.swift in Sources */,
 				4C3DAF2E24D4AD8D007F1857 /* DiskCache.swift in Sources */,
