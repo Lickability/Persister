@@ -12,30 +12,13 @@ import Foundation
 final class SynchronizedArray<Element: Equatable> {
     private var storage: [Element] = []
     private let queue: DispatchQueue = DispatchQueue(label: "com.lickability.synchronized-array")
-    
-    /// The starting index of the array.
-    var startIndex: Int {
-        get {
-            var index: Int!
-
-            queue.sync {
-                index = storage.startIndex
-            }
-            
-            return index
-        }
-    }
-    
+        
     /// The count of the array.
     var count: Int {
         get {
-            var count: Int!
-
-            queue.sync {
-                count = storage.count
+            return queue.sync {
+                return storage.count
             }
-            
-            return count
         }
     }
 
@@ -56,27 +39,10 @@ final class SynchronizedArray<Element: Equatable> {
             }
         }
         get {
-            var element: Element!
-            
-            queue.sync {
-                element = storage[index]
+            return queue.sync {
+                return storage[index]
             }
-            
-            return element
         }
-    }
-    
-    /// The first index of the provided element.
-    /// - Parameter element: The element to find the index of.
-    /// - Returns: The index of the element, if it exists within the array.
-    func firstIndex(of element: Element) -> Array.Index? {
-        var index: Int?
-        
-        queue.sync {
-            index = storage.firstIndex(of: element)
-        }
-        
-        return index
     }
     
     /// Appends a new element to the end of the array.
@@ -87,41 +53,21 @@ final class SynchronizedArray<Element: Equatable> {
         }
     }
     
-    /// Inserts the specified element at the index.
+    /// Inserts the specified element at the front of the array.
     /// - Parameters:
     ///   - newElement: The element to insert.
-    ///   - index: The index to insert at.
-    func insert(_ newElement: Element, at index: Int) {
+    func insertAtFront(_ newElement: Element) {
         queue.sync {
-            storage.insert(newElement, at: index)
+            storage.insert(newElement, at: storage.startIndex)
         }
     }
     
     /// Removes and returns the last element of the collection.
     /// - Returns: The last element of the collection.
     func popLast() -> Element? {
-        var element: Element?
-        
-        queue.sync {
-            element = storage.popLast()
+        return queue.sync {
+            return storage.popLast()
         }
-        
-        return element
-    }
-    
-    
-    /// Removes and returns the element at the specified position.
-    /// - Parameter index: The index of the element to remove.
-    /// - Returns: The element that was removed.
-    @discardableResult
-    func remove(at index: Int) -> Element {
-        var element: Element!
-
-        queue.sync {
-            element = storage.remove(at: index)
-        }
-        
-        return element
     }
     
     /// Removes all elements from the array.
@@ -136,6 +82,15 @@ final class SynchronizedArray<Element: Equatable> {
     func removeAll(where shouldBeRemoved: (Element) throws -> Bool) rethrows {
         try queue.sync {
             try storage.removeAll(where: shouldBeRemoved)
+        }
+    }
+    
+    /// A function that determines if the array contains the provided element.
+    /// - Parameter element: The element check to check for.
+    /// - Returns: Returns a `Bool` signalling if the array contains the provided element.
+    func contains(element: Element) -> Bool {
+        return queue.sync {
+            return storage.contains(element)
         }
     }
 }

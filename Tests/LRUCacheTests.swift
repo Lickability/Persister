@@ -71,4 +71,19 @@ class LRUCacheTests: XCTestCase {
             }
         }
     }
+    
+    func testMovingLastKeyDoesntCrash() {
+        let cache = LRUCache<String, String>(capacity: .limited(numberOfItems: 3))
+        let queue = DispatchQueue(label: "com.lickability.lrucachetestsqueue", attributes: [.concurrent])
+        
+        for _ in 1...100000 {
+            cache.write("1", for: "1", expiresOn: nil)
+            cache.write("2", for: "2", expiresOn: nil)
+            cache.write("3", for: "3", expiresOn: nil)
+            
+            queue.async {
+                cache.removeItem(for: "2")
+            }
+        }
+    }
 }

@@ -30,11 +30,11 @@ public final class LRUCache<Key: Hashable, Value> {
     ///   - date: The date at which the item is considered expired. If `nil`, the item will never expire.
     public func write(_ item: Value, for key: Key, expiresOn date: Date?) {
         
-        if let index = keysOrderedByRecentUse.firstIndex(of: key) {
-            moveKeyToFrontOfList(key: key, atIndex: index)
+        if keysOrderedByRecentUse.contains(element: key) {
+            moveKeyToFrontOfList(key: key)
             backingStoreDictionary[key] = item
         } else {
-            keysOrderedByRecentUse.insert(key, at: keysOrderedByRecentUse.startIndex)
+            keysOrderedByRecentUse.insertAtFront(key)
             backingStoreDictionary[key] = item
         }
         
@@ -61,8 +61,8 @@ public final class LRUCache<Key: Hashable, Value> {
             return nil
         }
         
-        if let index = keysOrderedByRecentUse.firstIndex(of: key) {
-            moveKeyToFrontOfList(key: key, atIndex: index)
+        if keysOrderedByRecentUse.contains(element: key) {
+            moveKeyToFrontOfList(key: key)
         }
         
         return value
@@ -99,9 +99,9 @@ public final class LRUCache<Key: Hashable, Value> {
         }
     }
     
-    private func moveKeyToFrontOfList(key: Key, atIndex index: Int) {
-        keysOrderedByRecentUse.remove(at: index)
-        keysOrderedByRecentUse.insert(key, at: keysOrderedByRecentUse.startIndex)
+    private func moveKeyToFrontOfList(key: Key) {
+        keysOrderedByRecentUse.removeAll(where: { $0 == key} )
+        keysOrderedByRecentUse.insertAtFront(key)
     }
     
     @objc private func didReceiveMemoryWarning() {
