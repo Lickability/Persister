@@ -122,21 +122,29 @@ extension FileAttributeKey {
 private extension FileManager {
     
     func extendedAttribute(_ name: String, on path: String) throws -> Data {
-        // Get size of attribute data
-        var size = getxattr(path, name, nil, 0, 0, 0)
-        if size == -1 {
+        // Get size of attribute data. https://developer.apple.com/library/archive/documentation/System/Conceptual/ManPages_iPhoneOS/man2/getxattr.2.html
+        let size = getxattr(path, name, nil, 0, 0, 0)
+        
+        guard size > 0 else {
             throw ExtendedAttributeError(errno: errno)
         }
         
         // Prepare buffer
         let alignment = MemoryLayout<Int8>.alignment
-        let ptr = UnsafeMutableRawPointer.allocate(byteCount: size, alignment: alignment)
+        let ptr = UnsafeMutableRawPointer.allocate(byteCount: size, alignment: alignment) // Allocates uninitialized memory with the specified size and alignment.
+        
         defer {
             ptr.deallocate()
         }
-        size = getxattr(path, name, ptr, size, 0, 0)
         
-        return Data(bytes: ptr, count: size)
+        let resultSize = getxattr(path, name, ptr, size, 0, 0)
+        
+        if resultSize == -1 {
+            throw ExtendedAttributeError(errno: errno)
+        } else if resultSize != size {
+            throw ExtendedAttributeError(errno: EIO)
+        }
+        return Data(bytesNoCopy: ptr, count: resultSize, deallocator: .free)  //Initialize a `Data` without copying the bytes.
     }
     
     func setExtendedAttribute(_ name: String, on path: String, data: Data) throws {
