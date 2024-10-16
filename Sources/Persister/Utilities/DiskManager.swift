@@ -133,10 +133,6 @@ private extension FileManager {
         let alignment = MemoryLayout<Int8>.alignment
         let ptr = UnsafeMutableRawPointer.allocate(byteCount: size, alignment: alignment) // Allocates uninitialized memory with the specified size and alignment.
         
-        defer {
-            ptr.deallocate()
-        }
-        
         let resultSize = getxattr(path, name, ptr, size, 0, 0)
         
         if resultSize == -1 {
