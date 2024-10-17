@@ -24,8 +24,6 @@ public struct Persister<MemoryCache: Cache & Sendable, DiskCache: Cache & Sendab
 }
 
 extension Persister: Cache {
-    public typealias Item = Item
-    
     
     // MARK: - Cache
     
