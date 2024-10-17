@@ -9,7 +9,7 @@
 import Foundation
 
 /// Caches items in memory. Items are purged based on least recent usage depending on the value for `capacity` passed on `init`.
-public struct MemoryCache<Item: Codable & Sendable> {
+public struct MemoryCache<Item: Codable & Sendable>: Sendable {
     
     // MARK: - Cache
     
