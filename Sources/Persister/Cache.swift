@@ -11,6 +11,7 @@ import Foundation
 /// Describes a type capable of performing read and write operations.
 public protocol Cache {
     
+    /// A type that conforms to `Codable` and `Sendable` that is read and written.
     associatedtype Item where Item: Codable & Sendable
     
     /// Determines when newly written items are considered expired. The default value is `never`.
