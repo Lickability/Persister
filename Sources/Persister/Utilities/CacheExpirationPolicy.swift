@@ -9,7 +9,7 @@
 import Foundation
 
 /// Determines when newly written items are considered expired.
-public enum CacheExpirationPolicy {
+public enum CacheExpirationPolicy: Sendable {
     
     /// Items never expire.
     case never

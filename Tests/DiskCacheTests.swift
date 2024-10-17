@@ -13,8 +13,6 @@ final class DiskCacheTests: XCTestCase {
 
     private lazy var cache = DiskCache<TestCodable>(rootDirectoryURL: diskURL)
     private let diskURL = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!
-    private let itemKey = "TestKey"
-    private let secondItemKey = "TestKey2"
 
     override func tearDownWithError() throws {
         try cache.removeAll()
@@ -23,6 +21,8 @@ final class DiskCacheTests: XCTestCase {
     }
     
     func testWritingAndReadingItem() throws {
+        let itemKey = "TestKey"
+        
         try cache.write(item: TestCodable(), forKey: itemKey)
         
         let item: ItemContainer<TestCodable>? = try cache.read(forKey: itemKey)
@@ -30,10 +30,12 @@ final class DiskCacheTests: XCTestCase {
     }
     
     func testRemovingItem() throws {
+        let itemKey = "TestKey"
+        
         try cache.write(item: TestCodable(), forKey: itemKey)
         try cache.remove(forKey: itemKey)
                 
-        XCTAssertThrowsError(try { let _: ItemContainer<TestCodable>? = try self.cache.read(forKey: self.itemKey) }()) { error in
+        XCTAssertThrowsError(try { let _: ItemContainer<TestCodable>? = try self.cache.read(forKey: itemKey) }()) { error in
             guard case PersistenceError.noValidDataForKey = error else {
                 return XCTFail()
             }
@@ -41,18 +43,21 @@ final class DiskCacheTests: XCTestCase {
     }
     
     func testRemovingAllItems() throws {
+        let itemKey = "TestKey"
+        let secondItemKey = "TestKey2"
+        
         try cache.write(item: TestCodable(), forKey: itemKey)
         try cache.write(item: TestCodable(), forKey: secondItemKey)
 
         try cache.removeAll()
         
-        XCTAssertThrowsError(try { let _: ItemContainer<TestCodable>? = try self.cache.read(forKey: self.itemKey) }()) { error in
+        XCTAssertThrowsError(try { let _: ItemContainer<TestCodable>? = try self.cache.read(forKey: itemKey) }()) { error in
             guard case PersistenceError.noValidDataForKey = error else {
                 return XCTFail()
             }
         }
         
-        XCTAssertThrowsError(try { let _: ItemContainer<TestCodable>? = try self.cache.read(forKey: self.secondItemKey) }()) { error in
+        XCTAssertThrowsError(try { let _: ItemContainer<TestCodable>? = try self.cache.read(forKey: secondItemKey) }()) { error in
             guard case PersistenceError.noValidDataForKey = error else {
                 return XCTFail()
             }
@@ -62,16 +67,19 @@ final class DiskCacheTests: XCTestCase {
     func testRemovingExpiredItems() throws {
         let expectation = XCTestExpectation(description: "Only one item should have been removed.")
         
+        let itemKey = "TestKey"
+        let secondItemKey = "TestKey2"
+        
         let cache = DiskCache<TestCodable>(rootDirectoryURL: diskURL, expirationPolicy: .afterInterval(1))
         try cache.write(item: TestCodable(), forKey: itemKey)
                 
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            try? cache.write(item: TestCodable(), forKey: self.secondItemKey)
+            try? cache.write(item: TestCodable(), forKey: secondItemKey)
             
             try? cache.removeExpired()
 
-            let item1: ItemContainer<TestCodable>? = try? cache.read(forKey: self.itemKey)
-            let item2: ItemContainer<TestCodable>? = try? cache.read(forKey: self.secondItemKey)
+            let item1: ItemContainer<TestCodable>? = try? cache.read(forKey: itemKey)
+            let item2: ItemContainer<TestCodable>? = try? cache.read(forKey: secondItemKey)
 
             XCTAssertNil(item1)
             XCTAssertNotNil(item2)
@@ -83,6 +91,7 @@ final class DiskCacheTests: XCTestCase {
     }
     
 //    func testDecodingFailureError() throws {
+//    let itemKey = "TestKey"
 //        try cache.write(item: TestCodable(), forKey: itemKey)
 //                
 //        XCTAssertThrowsError(try { let _: ItemContainer<String>? = try self.cache.read(forKey: self.itemKey) }()) { error in
@@ -95,6 +104,8 @@ final class DiskCacheTests: XCTestCase {
     func testUsesCorrectExpirationPolicy() throws {
         let expectation = XCTestExpectation(description: "Only one item should have been removed.")
         
+        let itemKey = "TestKey"
+        
         let cache = DiskCache<TestCodable>(rootDirectoryURL: diskURL, expirationPolicy: .afterInterval(1))
         try cache.write(item: TestCodable(), forKey: itemKey, expirationPolicy: .afterInterval(500))
         
@@ -102,7 +113,7 @@ final class DiskCacheTests: XCTestCase {
          
             try? cache.removeExpired()
             
-            let item1: ItemContainer<TestCodable>? = try? cache.read(forKey: self.itemKey)
+            let item1: ItemContainer<TestCodable>? = try? cache.read(forKey: itemKey)
                         
             XCTAssertNotNil(item1)
             

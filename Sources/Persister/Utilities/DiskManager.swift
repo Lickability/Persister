@@ -19,7 +19,7 @@ public struct DiskEntry<Item: Codable>: Codable {
 }
 
 /// Describes a type capable of reading and writing items from / to disk.
-public protocol DiskManager {
+public protocol DiskManager: Sendable {
     
     /// Creates a directory at the specified `URL` if one doesn’t exist already.
     /// - Parameter directoryURL: The `URL` of the directory to create.
@@ -49,6 +49,7 @@ public protocol DiskManager {
     func removeExpiredContentsOfDirectory(at url: URL) throws
 }
 
+extension FileManager: @retroactive @unchecked Sendable {}
 extension FileManager: DiskManager {
         
     private struct DateHolder: Codable {

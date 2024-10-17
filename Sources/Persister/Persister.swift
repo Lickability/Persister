@@ -9,7 +9,7 @@
 import Foundation
 
 /// Caches items in memory and on disk using the underlying caches provided on `init`. Items are attempted to be read from memory first before using the disk cache. Expired items will not be automatically removed from the `Persister`, but can be removed using the `removeExpired` function.
-public struct Persister<MemoryCache: Cache, DiskCache: Cache, Item: Codable & Sendable> where MemoryCache.Item == Item, DiskCache.Item == Item {
+public struct Persister<MemoryCache: Cache & Sendable, DiskCache: Cache & Sendable, Item: Codable & Sendable>: Sendable where MemoryCache.Item == Item, DiskCache.Item == Item {
     private let memoryCache: MemoryCache
     private let diskCache: DiskCache
     
