@@ -11,7 +11,7 @@ import XCTest
 
 final class MemoryCacheTests: XCTestCase {
 
-    private let cache: Cache = MemoryCache(capacity: .unlimited, expirationPolicy: .never)
+    private let cache = MemoryCache<TestCodable>(capacity: .unlimited, expirationPolicy: .never)
     private let itemKey = "TestKey"
     private let secondItemKey = "TestKey2"
 
@@ -52,7 +52,7 @@ final class MemoryCacheTests: XCTestCase {
     func testRemovingExpiredItems() throws {
         let expectation = XCTestExpectation(description: "Only one item should have been removed.")
         
-        let cache = MemoryCache(capacity: .unlimited, expirationPolicy: .afterInterval(1))
+        let cache = MemoryCache<TestCodable>(capacity: .unlimited, expirationPolicy: .afterInterval(1))
         try cache.write(item: TestCodable(), forKey: itemKey)
                 
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
@@ -73,7 +73,7 @@ final class MemoryCacheTests: XCTestCase {
     }
     
     func testCacheLimit() throws {
-        let cache = MemoryCache(capacity: .limited(numberOfItems: 3), expirationPolicy: .never)
+        let cache = MemoryCache<TestCodable>(capacity: .limited(numberOfItems: 3), expirationPolicy: .never)
         
         try cache.write(item: TestCodable(), forKey: "1")
         try cache.write(item: TestCodable(), forKey: "2")
@@ -94,7 +94,7 @@ final class MemoryCacheTests: XCTestCase {
     func testUsesCorrectExpirationPolicy() throws {
         let expectation = XCTestExpectation(description: "Only one item should have been removed.")
         
-        let cache = MemoryCache(capacity: .unlimited, expirationPolicy: .afterInterval(1))
+        let cache = MemoryCache<TestCodable>(capacity: .unlimited, expirationPolicy: .afterInterval(1))
         try cache.write(item: TestCodable(), forKey: itemKey, expirationPolicy: .afterInterval(500))
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {

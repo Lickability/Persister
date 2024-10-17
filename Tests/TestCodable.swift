@@ -8,6 +8,6 @@
 
 import Foundation
 
-struct TestCodable: Codable {
-    let title: String = "TestTitle"
+struct TestCodable: Codable, Sendable {
+    var title: String = "TestTitle"
 }

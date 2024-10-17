@@ -9,21 +9,23 @@
 import Foundation
 
 /// Caches items in memory and on disk using the underlying caches provided on `init`. Items are attempted to be read from memory first before using the disk cache. Expired items will not be automatically removed from the `Persister`, but can be removed using the `removeExpired` function.
-public struct Persister {
-    private let memoryCache: Cache
-    private let diskCache: Cache
+public struct Persister<MemoryCache: Cache, DiskCache: Cache, Item: Codable & Sendable> where MemoryCache.Item == Item, DiskCache.Item == Item {
+    private let memoryCache: MemoryCache
+    private let diskCache: DiskCache
     
     /// Creates a new `Persister`.
     /// - Parameters:
     ///   - memoryCache: The underlying memory cache.
     ///   - diskCache: The underlying disk cache.
-    public init(memoryCache: Cache, diskCache: Cache) {
+    public init(memoryCache: MemoryCache, diskCache: DiskCache) {
         self.memoryCache = memoryCache
         self.diskCache = diskCache
     }
 }
 
 extension Persister: Cache {
+    public typealias Item = Item
+    
     
     // MARK: - Cache
     
@@ -32,23 +34,25 @@ extension Persister: Cache {
         return .never
     }
     
-    public func read<Item: Codable>(forKey key: String) throws -> ItemContainer<Item>? {
+    public func read(forKey key: String) throws -> ItemContainer<Item>? {
         if let cachedObject: ItemContainer<Item> = try memoryCache.read(forKey: key) {
             return cachedObject
         }
         
-        let persistedObject: ItemContainer<Item>? = try diskCache.read(forKey: key)
-        try memoryCache.write(item: persistedObject?.item, forKey: key)
+        if let persistedObject = try diskCache.read(forKey: key) {
+            try memoryCache.write(item: persistedObject.item, forKey: key)
+            return persistedObject
+        }
         
-        return persistedObject
+        return nil
     }
     
-    public func write<Item: Codable>(item: Item, forKey key: String) throws {
+    public func write(item: Item, forKey key: String) throws {
         try memoryCache.write(item: item, forKey: key)
         try diskCache.write(item: item, forKey: key)
     }
     
-    public func write<Item: Codable>(item: Item, forKey key: String, expirationPolicy: CacheExpirationPolicy) throws {
+    public func write(item: Item, forKey key: String, expirationPolicy: CacheExpirationPolicy) throws {
         try memoryCache.write(item: item, forKey: key, expirationPolicy: expirationPolicy)
         try diskCache.write(item: item, forKey: key, expirationPolicy: expirationPolicy)
     }

@@ -12,9 +12,9 @@ import XCTest
 final class PersisterTests: XCTestCase {
 
     private let diskURL = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!
-    private let memoryCache: Cache = MemoryCache(capacity: .unlimited, expirationPolicy: .never)
-    private lazy var diskCache: Cache = DiskCache(rootDirectoryURL: diskURL)
-    private lazy var cache: Cache = Persister(memoryCache: memoryCache, diskCache: diskCache)
+    private let memoryCache = MemoryCache<TestCodable>(capacity: .unlimited, expirationPolicy: .never)
+    private lazy var diskCache = DiskCache<TestCodable>(rootDirectoryURL: diskURL)
+    private lazy var cache = Persister(memoryCache: memoryCache, diskCache: diskCache)
     
     private let itemKey = "TestKey"
     private let secondItemKey = "TestKey2"
@@ -65,9 +65,9 @@ final class PersisterTests: XCTestCase {
     func testRemovingExpiredItems() throws {
         let expectation = XCTestExpectation(description: "Only one item should have been removed.")
         
-        let memoryCache: Cache = MemoryCache(capacity: .unlimited, expirationPolicy: .afterInterval(1))
-        let diskCache: Cache = DiskCache(rootDirectoryURL: diskURL, expirationPolicy: .afterInterval(1))
-        let cache: Cache = Persister(memoryCache: memoryCache, diskCache: diskCache)
+        let memoryCache = MemoryCache<TestCodable>(capacity: .unlimited, expirationPolicy: .afterInterval(1))
+        let diskCache = DiskCache<TestCodable>(rootDirectoryURL: diskURL, expirationPolicy: .afterInterval(1))
+        let cache = Persister<MemoryCache<TestCodable>, DiskCache<TestCodable>, TestCodable>(memoryCache: memoryCache, diskCache: diskCache)
 
         try cache.write(item: TestCodable(), forKey: itemKey)
                 
