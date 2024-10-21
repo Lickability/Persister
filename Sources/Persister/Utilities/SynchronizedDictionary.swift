@@ -9,7 +9,7 @@
 import Foundation
 
 /// A Dictionary-like collection that synchronizes access to its contents via GCD.
-final class SynchronizedDictionary<Key, Value> where Key: Hashable {
+final class SynchronizedDictionary<Key: Sendable, Value: Sendable>: @unchecked Sendable where Key: Hashable {
     private var storage: [Key: Value] = [:]
     private let queue: DispatchQueue = DispatchQueue(label: "com.lickability.synchronized-dictionary", attributes: [.concurrent])
     

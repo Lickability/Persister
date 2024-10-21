@@ -9,7 +9,7 @@
 import Foundation
 
 /// Determines how many items can exist in a cache.
-public enum CacheCapacity {
+public enum CacheCapacity: Sendable {
     
     /// There is no limit to the number of items in the cache.
     case unlimited
