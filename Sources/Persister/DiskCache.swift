@@ -9,7 +9,7 @@
 import Foundation
 
 /// Caches items on disk.
-public struct DiskCache<Item: Codable & Sendable>: Sendable {
+public struct DiskCache: Sendable {
     
     // MARK: - Cache
     
@@ -42,11 +42,11 @@ extension DiskCache: Cache {
     
     // MARK: - Cache
     
-    public func write(item: Item, forKey key: String) throws {
+    public func write<Item: Codable & Sendable>(item: Item, forKey key: String) throws {
         try write(item: item, forKey: key, expirationPolicy: expirationPolicy)
     }
     
-    public func write(item: Item, forKey key: String, expirationPolicy: CacheExpirationPolicy) throws {
+    public func write<Item: Codable & Sendable>(item: Item, forKey key: String, expirationPolicy: CacheExpirationPolicy) throws {
         try diskManager.createDirectoryIfNecessary(directoryURL: rootDirectoryURL)
 
         let filePath = persistencePath(forKey: key)
@@ -59,7 +59,7 @@ extension DiskCache: Cache {
         }
     }
     
-    public func read(forKey key: String) throws -> ItemContainer<Item>? {
+    public func read<Item: Codable & Sendable>(forKey key: String) throws -> ItemContainer<Item>? {
         let filePath = persistencePath(forKey: key)
         
         if let entry = diskManager.read(atPath: filePath) {

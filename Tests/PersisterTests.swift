@@ -12,8 +12,8 @@ import XCTest
 final class PersisterTests: XCTestCase {
 
     private let diskURL = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!
-    private let memoryCache = MemoryCache<TestCodable>(capacity: .unlimited, expirationPolicy: .never)
-    private lazy var diskCache = DiskCache<TestCodable>(rootDirectoryURL: diskURL)
+    private let memoryCache = MemoryCache(capacity: .unlimited, expirationPolicy: .never)
+    private lazy var diskCache = DiskCache(rootDirectoryURL: diskURL)
     private lazy var cache = Persister(memoryCache: memoryCache, diskCache: diskCache)
 
     override func tearDownWithError() throws {
@@ -72,9 +72,9 @@ final class PersisterTests: XCTestCase {
         let itemKey = "TestKey"
         let secondItemKey = "TestKey2"
         
-        let memoryCache = MemoryCache<TestCodable>(capacity: .unlimited, expirationPolicy: .afterInterval(1))
-        let diskCache = DiskCache<TestCodable>(rootDirectoryURL: diskURL, expirationPolicy: .afterInterval(1))
-        let cache = Persister<MemoryCache<TestCodable>, DiskCache<TestCodable>, TestCodable>(memoryCache: memoryCache, diskCache: diskCache)
+        let memoryCache = MemoryCache(capacity: .unlimited, expirationPolicy: .afterInterval(1))
+        let diskCache = DiskCache(rootDirectoryURL: diskURL, expirationPolicy: .afterInterval(1))
+        let cache = Persister(memoryCache: memoryCache, diskCache: diskCache)
 
         try cache.write(item: TestCodable(), forKey: itemKey)
                 

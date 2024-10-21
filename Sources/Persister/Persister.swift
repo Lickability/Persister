@@ -9,7 +9,7 @@
 import Foundation
 
 /// Caches items in memory and on disk using the underlying caches provided on `init`. Items are attempted to be read from memory first before using the disk cache. Expired items will not be automatically removed from the `Persister`, but can be removed using the `removeExpired` function.
-public struct Persister<MemoryCache: Cache & Sendable, DiskCache: Cache & Sendable, Item: Codable & Sendable>: Sendable where MemoryCache.Item == Item, DiskCache.Item == Item {
+public struct Persister {
     private let memoryCache: MemoryCache
     private let diskCache: DiskCache
     
@@ -32,12 +32,12 @@ extension Persister: Cache {
         return .never
     }
     
-    public func read(forKey key: String) throws -> ItemContainer<Item>? {
+    public func read<Item: Codable & Sendable>(forKey key: String) throws -> ItemContainer<Item>? {
         if let cachedObject: ItemContainer<Item> = try memoryCache.read(forKey: key) {
             return cachedObject
         }
         
-        if let persistedObject = try diskCache.read(forKey: key) {
+        if let persistedObject: ItemContainer<Item> = try diskCache.read(forKey: key) {
             try memoryCache.write(item: persistedObject.item, forKey: key)
             return persistedObject
         }
@@ -45,12 +45,12 @@ extension Persister: Cache {
         return nil
     }
     
-    public func write(item: Item, forKey key: String) throws {
+    public func write<Item: Codable & Sendable>(item: Item, forKey key: String) throws {
         try memoryCache.write(item: item, forKey: key)
         try diskCache.write(item: item, forKey: key)
     }
     
-    public func write(item: Item, forKey key: String, expirationPolicy: CacheExpirationPolicy) throws {
+    public func write<Item: Codable & Sendable>(item: Item, forKey key: String, expirationPolicy: CacheExpirationPolicy) throws {
         try memoryCache.write(item: item, forKey: key, expirationPolicy: expirationPolicy)
         try diskCache.write(item: item, forKey: key, expirationPolicy: expirationPolicy)
     }

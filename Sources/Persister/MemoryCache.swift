@@ -9,7 +9,7 @@
 import Foundation
 
 /// Caches items in memory. Items are purged based on least recent usage depending on the value for `capacity` passed on `init`.
-public struct MemoryCache<Item: Codable & Sendable>: Sendable {
+public struct MemoryCache: Sendable {
     
     // MARK: - Cache
     
@@ -17,7 +17,7 @@ public struct MemoryCache<Item: Codable & Sendable>: Sendable {
     
     // MARK: - MemoryCache
     
-    private let cache: LRUCache<String, ItemContainer<Item>>
+    private let cache: LRUCache<String, any Sendable>
     
     /// Creates a new `MemoryCache`.
     /// - Parameters:
@@ -33,15 +33,15 @@ extension MemoryCache: Cache {
     
     // MARK: - Cache
     
-    public func read(forKey key: String) throws -> ItemContainer<Item>? {
-        return cache[key]
+    public func read<Item: Codable & Sendable>(forKey key: String) throws -> ItemContainer<Item>? {
+        return cache[key] as? ItemContainer<Item>
     }
     
-    public func write(item: Item, forKey key: String) throws {
+    public func write<Item: Codable & Sendable>(item: Item, forKey key: String) throws {
         try write(item: item, forKey: key, expirationPolicy: expirationPolicy)
     }
     
-    public func write(item: Item, forKey key: String, expirationPolicy: CacheExpirationPolicy) throws {
+    public func write<Item: Codable & Sendable>(item: Item, forKey key: String, expirationPolicy: CacheExpirationPolicy) throws {
         let expirationDate = expirationPolicy.expirationDate(from: Date())
         let container = ItemContainer(item: item, expirationDate: expirationDate)
         
