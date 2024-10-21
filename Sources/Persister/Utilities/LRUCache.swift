@@ -9,11 +9,11 @@
 import UIKit
 
 /// A generic "least-recently-used" cache. Items are purged based on least recent usage depending on the value for `capacity` passed on `init`.
-public final class LRUCache<Key: Hashable & Sendable, Value: Sendable>: @unchecked Sendable {
+public final class LRUCache<Key: Hashable & Sendable, Value: Sendable>: Sendable {
     private let capacity: CacheCapacity
-    private var keysOrderedByRecentUse = SynchronizedArray<Key>()
-    private var backingStoreDictionary = SynchronizedDictionary<Key, Value>()
-    private var expirationDictionary = SynchronizedDictionary<Key, Date>()
+    private nonisolated(unsafe) var keysOrderedByRecentUse = SynchronizedArray<Key>()
+    private nonisolated(unsafe) var backingStoreDictionary = SynchronizedDictionary<Key, Value>()
+    private nonisolated(unsafe) var expirationDictionary = SynchronizedDictionary<Key, Date>()
     
     /// Creates a new `LRUCache`.
     /// - Parameter capacity: The capacity to use for the cache. If the capacity is reached, the least recently used item will be evicted from the cache.
