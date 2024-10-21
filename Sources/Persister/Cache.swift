@@ -9,7 +9,7 @@
 import Foundation
 
 /// Describes a type capable of performing read and write operations.
-public protocol Cache {
+public protocol Cache: Sendable {
     
     /// Determines when newly written items are considered expired. The default value is `never`.
     var expirationPolicy: CacheExpirationPolicy { get }
