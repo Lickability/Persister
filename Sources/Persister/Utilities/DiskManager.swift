@@ -118,37 +118,36 @@ extension FileAttributeKey {
     
     /// The name associated with expiration dates stored as extended attributes.
     static let expirationDate = FileAttributeKey("net.lickability.fileAttributeExpirationDate")
+    
+    /// The name of the key used by the system to store extended attributes.
+    static let extendedAttributesKey = FileAttributeKey("NSFileExtendedAttributes")
 }
 
 private extension FileManager {
     
     func extendedAttribute(_ name: String, on path: String) throws -> Data {
-        // Get size of attribute data
-        var size = getxattr(path, name, nil, 0, 0, 0)
-        if size == -1 {
-            throw ExtendedAttributeError(errno: errno)
+        let attributes = try attributesOfItem(atPath: path)
+        let extendedAttributes = attributes[.extendedAttributesKey] as? [String: Any]
+        
+        guard let extendedAttributes, let data = extendedAttributes[name] as? Data else {
+            throw ExtendedAttributeError(errno: ENODATA)
         }
         
-        // Prepare buffer
-        let alignment = MemoryLayout<Int8>.alignment
-        let ptr = UnsafeMutableRawPointer.allocate(byteCount: size, alignment: alignment)
-        defer {
-            ptr.deallocate()
-        }
-        size = getxattr(path, name, ptr, size, 0, 0)
-        
-        return Data(bytes: ptr, count: size)
+        return data
     }
     
     func setExtendedAttribute(_ name: String, on path: String, data: Data) throws {
-        try data.withUnsafeBytes { (bytes: UnsafeRawBufferPointer) -> Void in
-            guard let ptr = bytes.baseAddress else {
-                return
-            }
-            let result = setxattr(path, name, ptr, data.count, 0, 0)
-            if result == -1 {
-                throw ExtendedAttributeError(errno: errno)
-            }
+        var attributes = try attributesOfItem(atPath: path)
+        
+        var extendedAttributes = attributes[.extendedAttributesKey] as? [String: Any] ?? [:]
+        extendedAttributes[name] = data
+        
+        attributes[.extendedAttributesKey] = extendedAttributes
+        
+        do {
+            try setAttributes(attributes, ofItemAtPath: path)
+        } catch {
+            assertionFailure("This represents a file system error, where we were unable to set the expiration of a file successfully. This may mean that the `NSFileExtendedAttributes` is no longer a settable key.")
         }
     }
 }
