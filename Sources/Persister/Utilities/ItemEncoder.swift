@@ -9,7 +9,7 @@
 import Foundation
 
 /// Describes a type capable of encoding items into `Data`.
-public protocol ItemEncoder {
+public protocol ItemEncoder: Sendable {
     
     /// Encodes the specified item into `Data`.
     /// - Parameter item: The item to encode.

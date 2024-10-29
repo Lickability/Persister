@@ -12,12 +12,9 @@ import XCTest
 final class PersisterTests: XCTestCase {
 
     private let diskURL = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!
-    private let memoryCache: Cache = MemoryCache(capacity: .unlimited, expirationPolicy: .never)
-    private lazy var diskCache: Cache = DiskCache(rootDirectoryURL: diskURL)
-    private lazy var cache: Cache = Persister(memoryCache: memoryCache, diskCache: diskCache)
-    
-    private let itemKey = "TestKey"
-    private let secondItemKey = "TestKey2"
+    private let memoryCache = MemoryCache(capacity: .unlimited, expirationPolicy: .never)
+    private lazy var diskCache = DiskCache(rootDirectoryURL: diskURL)
+    private lazy var cache = Persister(memoryCache: memoryCache, diskCache: diskCache)
 
     override func tearDownWithError() throws {
         try cache.removeAll()
@@ -26,6 +23,8 @@ final class PersisterTests: XCTestCase {
     }
     
     func testWritingAndReadingItem() throws {
+        let itemKey = "TestKey"
+        
         try cache.write(item: TestCodable(), forKey: itemKey)
         
         let item: ItemContainer<TestCodable>? = try cache.read(forKey: itemKey)
@@ -33,10 +32,12 @@ final class PersisterTests: XCTestCase {
     }
     
     func testRemovingItem() throws {
+        let itemKey = "TestKey"
+        
         try cache.write(item: TestCodable(), forKey: itemKey)
         try cache.remove(forKey: itemKey)
                 
-        XCTAssertThrowsError(try { let _: ItemContainer<TestCodable>? = try self.cache.read(forKey: self.itemKey) }()) { error in
+        XCTAssertThrowsError(try { let _: ItemContainer<TestCodable>? = try self.cache.read(forKey: itemKey) }()) { error in
             guard case PersistenceError.noValidDataForKey = error else {
                 return XCTFail()
             }
@@ -44,18 +45,21 @@ final class PersisterTests: XCTestCase {
     }
     
     func testRemovingAllItems() throws {
+        let itemKey = "TestKey"
+        let secondItemKey = "TestKey2"
+        
         try cache.write(item: TestCodable(), forKey: itemKey)
         try cache.write(item: TestCodable(), forKey: secondItemKey)
 
         try cache.removeAll()
         
-        XCTAssertThrowsError(try { let _: ItemContainer<TestCodable>? = try self.cache.read(forKey: self.itemKey) }()) { error in
+        XCTAssertThrowsError(try { let _: ItemContainer<TestCodable>? = try self.cache.read(forKey: itemKey) }()) { error in
             guard case PersistenceError.noValidDataForKey = error else {
                 return XCTFail()
             }
         }
         
-        XCTAssertThrowsError(try { let _: ItemContainer<TestCodable>? = try self.cache.read(forKey: self.secondItemKey) }()) { error in
+        XCTAssertThrowsError(try { let _: ItemContainer<TestCodable>? = try self.cache.read(forKey: secondItemKey) }()) { error in
             guard case PersistenceError.noValidDataForKey = error else {
                 return XCTFail()
             }
@@ -65,19 +69,22 @@ final class PersisterTests: XCTestCase {
     func testRemovingExpiredItems() throws {
         let expectation = XCTestExpectation(description: "Only one item should have been removed.")
         
-        let memoryCache: Cache = MemoryCache(capacity: .unlimited, expirationPolicy: .afterInterval(1))
-        let diskCache: Cache = DiskCache(rootDirectoryURL: diskURL, expirationPolicy: .afterInterval(1))
-        let cache: Cache = Persister(memoryCache: memoryCache, diskCache: diskCache)
+        let itemKey = "TestKey"
+        let secondItemKey = "TestKey2"
+        
+        let memoryCache = MemoryCache(capacity: .unlimited, expirationPolicy: .afterInterval(1))
+        let diskCache = DiskCache(rootDirectoryURL: diskURL, expirationPolicy: .afterInterval(1))
+        let cache = Persister(memoryCache: memoryCache, diskCache: diskCache)
 
         try cache.write(item: TestCodable(), forKey: itemKey)
                 
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            try? cache.write(item: TestCodable(), forKey: self.secondItemKey)
+            try? cache.write(item: TestCodable(), forKey: secondItemKey)
             
             try? cache.removeExpired()
 
-            let item1: ItemContainer<TestCodable>? = try? cache.read(forKey: self.itemKey)
-            let item2: ItemContainer<TestCodable>? = try? cache.read(forKey: self.secondItemKey)
+            let item1: ItemContainer<TestCodable>? = try? cache.read(forKey: itemKey)
+            let item2: ItemContainer<TestCodable>? = try? cache.read(forKey: secondItemKey)
 
             XCTAssertNil(item1)
             XCTAssertNotNil(item2)

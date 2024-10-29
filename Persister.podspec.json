@@ -1,10 +1,10 @@
 {
   "name": "Persister",
-  "version": "0.1.0",
+  "version": "2.0.0",
   "homepage": "https://github.com/Lickability/Persister",
   "source": {
       "git": "https://github.com/Lickability/Persister.git",
-      "tag": "0.1.0"
+      "tag": "2.0.0"
   },
   "summary": "A library that handles persistence.",
   "authors" : {
@@ -16,9 +16,9 @@
     "file": "LICENSE"
   },
   "platforms": {
-    "ios": "13.0"
+    "ios": "16.0"
   },
-  "swift_version": "5.0",
+  "swift_version": "6.0",
   "requires_arc": true,
   "frameworks": [
     "Foundation"

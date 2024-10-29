@@ -9,8 +9,8 @@
 import Foundation
 
 /// A Array-like collection that synchronizes access to its contents via GCD.
-final class SynchronizedArray<Element: Equatable> {
-    private var storage: [Element] = []
+final class SynchronizedArray<Element: Equatable>: Sendable {
+    nonisolated(unsafe) private var storage: [Element] = []
     private let queue: DispatchQueue = DispatchQueue(label: "com.lickability.synchronized-array")
         
     /// The count of the array.

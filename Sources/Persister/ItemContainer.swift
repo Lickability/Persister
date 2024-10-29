@@ -10,7 +10,7 @@ import Foundation
 
 /// A container that holds the item and associated metadata.
 @dynamicMemberLookup
-public struct ItemContainer<Item: Codable>: Codable {
+public struct ItemContainer<Item: Codable & Sendable>: Codable, Sendable {
     
     /// The item that is persisted.
     public let item: Item

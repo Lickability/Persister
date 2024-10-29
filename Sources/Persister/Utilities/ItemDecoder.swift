@@ -9,7 +9,7 @@
 import Foundation
 
 /// Describes a type capable of decoding items from `Data`.
-public protocol ItemDecoder {
+public protocol ItemDecoder: Sendable {
     
     /// Attempts to decode the `Data` into an instance of the specified type.
     /// - Parameters:
